@@ -1,0 +1,9 @@
+*.iml
+.idea/
+
+build/
+
+felix-cache/
+repoOsgi/*
+!repoOsgi/.keep
+

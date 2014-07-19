@@ -1,0 +1,22 @@
+version = "$raceVersion"
+
+dependencies {
+    compile "net.slintes.webracer:car:$carVersion"
+}
+
+jar {
+    archiveName = "$jar.baseName.$jar.extension"
+    manifest {
+        name 'Webracer-Race'
+        instructionReplace 'Bundle-SymbolicName', 'net.slintes.webracer.race'
+        instruction 'Export-Package', 'net.slintes.webracer.race'
+        instruction 'Bundle-Description', 'Race component for Webracer project'
+        instruction 'Bundle-Activator', 'net.slintes.webracer.race.RaceActivator'
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.artifactId = 'race'
+    }
+}

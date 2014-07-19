@@ -1,0 +1,6 @@
+rootProject.name = 'webracer'
+include 'WebracerStarter'
+include 'WebracerWeb'
+include 'WebracerRace'
+include 'WebracerTrack'
+include 'WebracerCar'

@@ -1,0 +1,2 @@
+version = "$starterVersion"
+jar.archiveName = "$jar.baseName.$jar.extension"

@@ -1,0 +1,63 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+version = '0.1.0.SNAPSHOT'
+group = 'net.slintes.webracer'
+
+sourceCompatibility = 1.8
+
+ext {
+    DocUrl = 'http://github.com/slintes/Webracer'
+    starterVersion = '0.1.0.SNAPSHOT'
+    webVersion = '0.1.0.SNAPSHOT'
+    raceVersion = '0.1.0.SNAPSHOT'
+    carVersion = '0.1.0.SNAPSHOT'
+    trackVersion = '0.1.0.SNAPSHOT'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+configure(subprojects.findAll()) { subproject ->
+    apply plugin: 'java'
+
+    group = "$rootProject.group"
+
+    configurations.compile.transitive
+
+    dependencies {
+        compile 'org.apache.felix:org.apache.felix.framework:4.4.1'
+    }
+
+    repositories{
+        mavenCentral()
+        mavenLocal()
+    }
+
+}
+
+configure(subprojects.findAll {it.name != 'WebracerStarter'}) { subproject ->
+    apply plugin: 'osgi'
+    apply plugin: 'maven'
+}
+
+dependencies {
+
+    // define dependencies to subprojects for the copyToLibs task
+    compile project(":WebracerWeb")
+    compile project(":WebracerTrack")
+    compile project(":WebracerCar")
+    compile project(":WebracerRace")
+    compile project(":WebracerStarter")
+
+}
+
+task copyToLibs(type: Copy, dependsOn: 'jar') {
+    // copy all jars to one directory, which then can be used by OSGi framework
+    into 'repoOsgi'
+    from configurations.runtime
+}
+jar.finalizedBy copyToLibs
+install.finalizedBy copyToLibs

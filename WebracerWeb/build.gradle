@@ -1,0 +1,17 @@
+version = "$webVersion"
+
+jar {
+    archiveName = "$jar.baseName.$jar.extension"
+    manifest {
+        name 'Webracer-Web'
+        instructionReplace 'Bundle-SymbolicName', 'net.slintes.webracer.web'
+        instruction 'Export-Package', 'net.slintes.webracer.web'
+        instruction 'Bundle-Description', 'Web component for Webracer project'
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.artifactId = 'web'
+    }
+}
