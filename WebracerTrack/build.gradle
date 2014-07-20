@@ -2,12 +2,17 @@ version = "$trackVersion"
 
 jar {
     archiveName = "$jar.baseName.$jar.extension"
-    manifest {
-        name 'Webracer-Race'
-        instructionReplace 'Bundle-SymbolicName', 'net.slintes.webracer.track'
-        instruction 'Export-Package', 'net.slintes.webracer.track'
-        instruction 'Bundle-Description', 'Track component for Webracer project'
-    }
+}
+
+bundle {
+    instructions << [
+            'Bundle-Name': 'Webracer-Track',
+            'Bundle-Description': 'Track component for Webracer project',
+            'Bundle-SymbolicName': 'net.slintes.webracer.track',
+//            'Bundle-Activator': 'net.slintes.webracer.track.TrackActivator',
+            'Export-Package': 'net.slintes.webracer.track',
+            'Import-Package': 'org.osgi.framework'
+    ]
 }
 
 install {

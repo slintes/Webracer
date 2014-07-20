@@ -1,13 +1,25 @@
 version = "$webVersion"
 
+dependencies {
+    provided "net.slintes.webracer:race:$raceVersion"
+//    compile files('libs/vertx-core-2.1.1.jar', 'libs/vertx-platform-2.1.1.jar',
+//            'libs/netty-all-4.0.20.Final.jar', 'libs/jackson-annotations-2.2.2.jar',
+//            'libs/jackson-core-2.2.2.jar', 'libs/jackson-databind-2.2.2.jar')
+}
+
 jar {
     archiveName = "$jar.baseName.$jar.extension"
-    manifest {
-        name 'Webracer-Web'
-        instructionReplace 'Bundle-SymbolicName', 'net.slintes.webracer.web'
-        instruction 'Export-Package', 'net.slintes.webracer.web'
-        instruction 'Bundle-Description', 'Web component for Webracer project'
-    }
+}
+
+bundle {
+    instructions << [
+            'Bundle-Name': 'Webracer-Web',
+            'Bundle-Description': 'Web component for Webracer project',
+            'Bundle-SymbolicName': 'net.slintes.webracer.web',
+            'Bundle-Activator': 'net.slintes.webracer.web.WebActivator',
+            'Export-Package': 'net.slintes.webracer.web',
+            'Import-Package': 'net.slintes.webracer.race,org.osgi.framework'
+    ]
 }
 
 install {

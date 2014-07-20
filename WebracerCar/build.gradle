@@ -1,14 +1,14 @@
 version = "$carVersion"
 
-jar {
-    archiveName = "$jar.baseName.$jar.extension"
-    manifest {
-        name 'Webracer-Car'
-        instructionReplace 'Bundle-SymbolicName', 'net.slintes.webracer.car'
-        instruction 'Export-Package', 'net.slintes.webracer.car'
-        instruction 'Bundle-Description', 'Car component for Webracer project'
-        instruction 'Bundle-Activator', 'net.slintes.webracer.car.CarFactoryActivator'
-    }
+bundle {
+    instructions << [
+            'Bundle-Name': 'Webracer-Car',
+            'Bundle-Description': 'Car component for Webracer project',
+            'Bundle-SymbolicName': 'net.slintes.webracer.car',
+            'Bundle-Activator': 'net.slintes.webracer.car.CarFactoryActivator',
+            'Export-Package': 'net.slintes.webracer.car',
+            'Import-Package': 'org.osgi.framework'
+    ]
 }
 
 install {

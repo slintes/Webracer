@@ -1,18 +1,19 @@
 version = "$raceVersion"
 
 dependencies {
-    compile "net.slintes.webracer:car:$carVersion"
+    provided "net.slintes.webracer:car:$carVersion"
+    provided "net.slintes.webracer:web:$webVersion"
 }
 
-jar {
-    archiveName = "$jar.baseName.$jar.extension"
-    manifest {
-        name 'Webracer-Race'
-        instructionReplace 'Bundle-SymbolicName', 'net.slintes.webracer.race'
-        instruction 'Export-Package', 'net.slintes.webracer.race'
-        instruction 'Bundle-Description', 'Race component for Webracer project'
-        instruction 'Bundle-Activator', 'net.slintes.webracer.race.RaceActivator'
-    }
+bundle {
+    instructions << [
+            'Bundle-Name': 'Webracer-Race',
+            'Bundle-Description': 'Race component for Webracer project',
+            'Bundle-SymbolicName': 'net.slintes.webracer.race',
+            'Bundle-Activator': 'net.slintes.webracer.race.RaceActivator',
+            'Export-Package': 'net.slintes.webracer.race',
+            'Import-Package': 'net.slintes.webracer.web,net.slintes.webracer.car,org.osgi.framework'
+    ]
 }
 
 install {

@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.dm.gradle:bundle:0.3'
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'maven'
 
@@ -15,7 +25,7 @@ ext {
     trackVersion = '0.1.0.SNAPSHOT'
 }
 
-repositories {
+repositories{
     mavenCentral()
     mavenLocal()
 }
@@ -25,10 +35,17 @@ configure(subprojects.findAll()) { subproject ->
 
     group = "$rootProject.group"
 
-    configurations.compile.transitive
+    configurations {
+        provided
+        compile.transitive
+    }
+
+    sourceSets {
+        main{ compileClasspath += configurations.provided }
+    }
 
     dependencies {
-        compile 'org.apache.felix:org.apache.felix.framework:4.4.1'
+        provided 'org.apache.felix:org.apache.felix.framework:4.4.1'
     }
 
     repositories{
@@ -39,8 +56,16 @@ configure(subprojects.findAll()) { subproject ->
 }
 
 configure(subprojects.findAll {it.name != 'WebracerStarter'}) { subproject ->
-    apply plugin: 'osgi'
     apply plugin: 'maven'
+    apply plugin: 'bundle'
+//    bundle {
+//        trace = true
+//    }
+
+    jar{
+        from {configurations.compile.collect {it.isDirectory() ? it : zipTree(it)}}
+    }
+
 }
 
 dependencies {
@@ -58,6 +83,11 @@ task copyToLibs(type: Copy, dependsOn: 'jar') {
     // copy all jars to one directory, which then can be used by OSGi framework
     into 'repoOsgi'
     from configurations.runtime
+            .filter {it.name.startsWith('Webracer')}
 }
 jar.finalizedBy copyToLibs
 install.finalizedBy copyToLibs
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
+}

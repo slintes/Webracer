@@ -26,14 +26,16 @@ public class Starter {
             // Install bundles
             BundleContext context = framework.getBundleContext();
             Bundle race = context.installBundle("file:repoOsgi/WebracerRace.jar");
+            Bundle web = context.installBundle("file:repoOsgi/WebracerWeb.jar");
             Bundle car = context.installBundle("file:repoOsgi/WebracerCar.jar");
 
             // Start and stop framework and bundles
             framework.start();
             car.start();
+            web.start();
             race.start();
 
-            framework.stop();
+//            framework.stop();
         }
         catch (Exception exception)
         {
