@@ -8,13 +8,13 @@ import net.slintes.webracer.web.Web;
  */
 public class WebImpl implements Web {
 
-    private WebVerticle webVerticle;
+    private WebServer webVerticle;
     private RaceCallback raceCallback;
 
     @Override
     public void start() {
 
-        webVerticle = new WebVerticle(this);
+        webVerticle = new WebServer(this);
         webVerticle.start();
 
     }
