@@ -10,5 +10,4 @@ public interface Web {
     public void start();
     public void registerRaceCallback(RaceCallback raceCallback);
     public void sendMessage(String clienID, String message);
-
 }

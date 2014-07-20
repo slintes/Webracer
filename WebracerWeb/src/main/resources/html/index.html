@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Webracer</title>
+</head>
+<body>
+
+<br><br>
+
+Server URL: <input id="url" type="text" value="ws://localhost:8080/ws/" style="width:300px;" />
+<input type="button" value="connect" onclick="connect()"/>
+<input type="button" value="disconnect" onclick="disconnect()"/>
+
+<br><br>
+
+Message: <input id="msg" type="text" style="width:300px;" />
+<input type="button" value="send" onclick="sendMessage()"/>
+
+<br><br>
+
+<script>
+    var connection;
+
+    function connect(){
+        var url = document.getElementById("url").value;
+        connection = new WebSocket(url);
+        connection.onerror = function (error) {
+            console.log('WebSocket Error ' + error);
+        };
+        connection.onmessage = function (message) {
+            console.log('WebSocket Message ' + message.data);
+            alert(message.data);
+        };
+
+    }
+
+    function disconnect(){
+        connection.close();
+    }
+
+    function sendMessage(){
+        var message = document.getElementById("msg").value;
+        connection.send(message);
+    }
+
+</script>
+
+</body>
+</html>

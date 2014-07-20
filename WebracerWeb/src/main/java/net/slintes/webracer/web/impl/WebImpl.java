@@ -8,14 +8,14 @@ import net.slintes.webracer.web.Web;
  */
 public class WebImpl implements Web {
 
-    private WebServer webVerticle;
+    private WebServer webServer;
     private RaceCallback raceCallback;
 
     @Override
     public void start() {
 
-        webVerticle = new WebServer(this);
-        webVerticle.start();
+        webServer = new WebServer(this);
+        webServer.start();
 
     }
 
@@ -25,11 +25,17 @@ public class WebImpl implements Web {
     }
 
     @Override
-    public void sendMessage(String clienId, String message) {
-        webVerticle.sendMessage(clienId, message);
+    public void sendMessage(String clientId, String message) {
+        webServer.sendMessage(clientId, message);
     }
 
-    public void registerClient(String clientID){
-        raceCallback.registerCar(clientID);
+    public void registerClient(String id){
+        raceCallback.registerCar(id);
     }
+
+    public void unRegisterClient(String id) {
+        raceCallback.unRegisterCar(id);
+    }
+
+
 }
