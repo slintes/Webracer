@@ -21,6 +21,8 @@ import java.util.Optional;
 public class WebServer {
 
     private final WebImpl web;
+
+    // TODO is this synchronizing enough?
     private List<WebWebSocketAdapter> clientSessions = Collections.synchronizedList(new ArrayList<>());
 
     public WebServer(WebImpl web) {

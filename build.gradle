@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.dm.gradle:bundle:0.3'
+        classpath 'org.dm.gradle:bundle:0.3' // gradle bundle plugin
     }
 }
 
@@ -17,7 +17,7 @@ group = 'net.slintes.webracer'
 sourceCompatibility = 1.8
 
 ext {
-    DocUrl = 'http://github.com/slintes/Webracer'
+    // central management of version numbers
     starterVersion = '0.1.0.SNAPSHOT'
     webVersion = '0.1.0.SNAPSHOT'
     raceVersion = '0.1.0.SNAPSHOT'
@@ -30,31 +30,33 @@ repositories{
     mavenLocal()
 }
 
+// configuration for all subprojects
 configure(subprojects.findAll()) { subproject ->
-    apply plugin: 'java'
-
-    group = "$rootProject.group"
-
-    configurations {
-        provided
-        compile.transitive
-    }
-
-    sourceSets {
-        main{ compileClasspath += configurations.provided }
-    }
-
-    dependencies {
-        provided 'org.apache.felix:org.apache.felix.framework:4.4.1'
-    }
 
     repositories{
         mavenCentral()
         mavenLocal()
     }
 
+    configurations {
+        // simulate maven's "provided" scope
+        provided
+        compile.extendsFrom configurations.provided
+        compile.transitive
+    }
+
+    apply plugin: 'java'
+
+    // for maven plugin
+    group = "$rootProject.group"
+
+    dependencies {
+        provided 'org.apache.felix:org.apache.felix.framework:4.4.1'
+    }
+
 }
 
+// configuration for all OSGi subprojects
 configure(subprojects.findAll {it.name != 'WebracerStarter'}) { subproject ->
     apply plugin: 'maven'
     apply plugin: 'bundle'
@@ -63,7 +65,9 @@ configure(subprojects.findAll {it.name != 'WebracerStarter'}) { subproject ->
 //    }
 
     jar{
-        from {configurations.compile.collect {it.isDirectory() ? it : zipTree(it)}}
+        // create fat jar containing all compile dependencies
+        from {(configurations.compile - configurations.provided)
+                .collect {it.isDirectory() ? it : zipTree(it)}}
     }
 
 }
@@ -88,6 +92,7 @@ task copyToLibs(type: Copy, dependsOn: 'jar') {
 jar.finalizedBy copyToLibs
 install.finalizedBy copyToLibs
 
+// create/update gradle wrapper
 task wrapper(type: Wrapper) {
     gradleVersion = '2.0'
 }

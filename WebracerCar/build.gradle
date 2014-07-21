@@ -1,5 +1,9 @@
 version = "$carVersion"
 
+jar {
+    archiveName = "$jar.baseName.$jar.extension"
+}
+
 bundle {
     instructions << [
             'Bundle-Name': 'Webracer-Car',

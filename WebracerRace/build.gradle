@@ -5,6 +5,10 @@ dependencies {
     provided "net.slintes.webracer:web:$webVersion"
 }
 
+jar {
+    archiveName = "$jar.baseName.$jar.extension"
+}
+
 bundle {
     instructions << [
             'Bundle-Name': 'Webracer-Race',
