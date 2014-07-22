@@ -74,32 +74,234 @@
 //        tiles[i] = tileLine;
 //    }
 
+    var TIMEOUT = 1000;
+
+    var SPEED1 = 10;
+    var SPEED2 = 30;
+
+    var DEGREES = 30;
+    var STEERING_STRAIGHT = "steerStraight";
+    var STEERING_LEFT = "steerLeft";
+    var STEERING_RIGHT = "steerRight";
+
+    var KEY_UP = "up";
+    var KEY_DOWN = "down";
+    var KEY_LEFT = "left";
+    var KEY_RIGHT = "right";
+    var KEY_NONE = "none";
+
     var Q = Quintus()
             .include("Sprites, Scenes, Input, 2D, UI")
-            .setup({maximize: true});
+            .setup({maximize: true})
+            .controls(true);
+
+    Q.tilePos = function(col, row) {
+        return { x: col * 9, y: row* 9 };
+    }
+
+    Q.component("RaceControl", {
+
+        added: function() {
+            var p = this.entity.p;
+
+            p.stepDistance = 0;
+            p.stepDelay = 1;
+            p.stepWait = 0;
+
+            this.entity.on("hit", this,"collision");
+            this.entity.on("step",this,"step");
+        },
+
+        collision: function(col) {
+            var p = this.entity.p;
+        },
+
+        step: function(dt) {
+            var p = this.entity.p, moved = false;
+
+            p.stepWait -= dt;
+
+            if(p.stepping) {
+                p.x += p.diffX * dt / p.stepDelay;
+                p.y += p.diffY * dt / p.stepDelay;
+            }
+
+            if(p.stepWait > 0) { return; }
+
+            if(p.stepping) {
+                p.x = p.destX;
+                p.y = p.destY;
+            }
+
+            p.stepping = false;
+
+            p.diffX = 0;
+            p.diffY = 0;
+
+        },
+
+        nextRound: function() {
+
+            console.log("player step");
+
+            var p = this.entity.p;
+
+            var lastKey = Q.state.get("lastKey");
+            Q.state.set({lastKey: KEY_NONE});
+
+            // set new steering
+            var steering = Q.state.get("steering");
+            if(lastKey == KEY_LEFT) {
+                if(steering == STEERING_RIGHT){
+                    steering = STEERING_STRAIGHT;
+                } else if(steering == STEERING_STRAIGHT){
+                    steering = STEERING_LEFT;
+                }
+            } else if(lastKey == KEY_RIGHT) {
+                if(steering == STEERING_LEFT){
+                    steering = STEERING_STRAIGHT;
+                } else if(steering == STEERING_STRAIGHT){
+                    steering = STEERING_RIGHT;
+                }
+            }
+            if(steering == STEERING_LEFT){
+                p.angle -= DEGREES;
+            } else if(steering == STEERING_RIGHT){
+                p.angle += DEGREES;
+            }
+            Q.state.set({steering: steering})
+
+            // set new speed
+            var speed = Q.state.get("speed");
+            if(lastKey == KEY_UP) {
+                if(speed == 0){
+                    speed = SPEED1;
+                } else if(speed == SPEED1){
+                    speed = SPEED2;
+                }
+            } else if(lastKey == KEY_DOWN) {
+                if(speed == SPEED2){
+                    speed = SPEED1;
+                } else if(speed == SPEED1){
+                    speed = 0;
+                }
+            }
+            Q.state.set({speed: speed})
+            p.stepDistance = speed;
+
+            // calculate way to
+            p.diffX = (Math.sin(2 * Math.PI * p.angle / 360) * p.stepDistance);
+            p.diffY = - (Math.cos(2 * Math.PI * p.angle / 360) * p.stepDistance);
+
+            if(p.diffY || p.diffX ) {
+                p.stepping = true;
+                p.origX = p.x;
+                p.origY = p.y;
+                p.destX = p.x + p.diffX;
+                p.destY = p.y + p.diffY;
+                p.stepWait = p.stepDelay;
+            }
+
+        }
+
+    });
+
+    Q.Sprite.extend("Player",{
+        init: function(p) {
+            this._super(p, {
+                sheet: "car1",
+                scale: 1.2,
+                angle: 90,
+                broken: false,
+                vx: 0,
+                vy: 0,
+                gravityX: 0,
+                gravityY: 0
+            });
+            this.add("2d, RaceControl");
+
+            upPressed = function() {
+                Q.state.set({lastKey: KEY_UP});
+            };
+            downPressed = function() {
+                Q.state.set({lastKey: KEY_DOWN});
+            };
+            leftPressed = function() {
+                Q.state.set({lastKey: KEY_LEFT});
+            };
+            rightPressed = function() {
+                Q.state.set({lastKey: KEY_RIGHT});
+            }
+
+            Q.input.on("up", this, upPressed);
+            Q.input.on("down", this, downPressed);
+            Q.input.on("left", this, leftPressed);
+            Q.input.on("right", this, rightPressed);
+
+
+        }
+
+    });
+
+//    Q.Sprite.extend("Other1",{
+//        init: function(p) {
+//            this._super(p, { sheet: "car2"});
+//            this.add('2d');
+//        }
+//    });
+
+    Q.TileLayer.extend("RaceTileLayer",{
+        collidableTile: function(tileNum) {
+            Q.state.set({lastCollision: tileNum});
+            // ignore asphalt and starting grid
+            return tileNum != 1 && tileNum != 5
+        }
+    });
 
     Q.scene("track", function(stage) {
 
         stage.collisionLayer(
-                new Q.TileLayer({ dataAsset: '/webracer/WebracerWeb/track.json',
-                    sheet: 'tiles', tileW: 9, tileH: 9}));
+                new Q.RaceTileLayer({
+                    dataAsset: "/webracer/WebracerWeb/track.json",
+                    sheet: "tiles",
+                    tileW: 9,
+                    tileH: 9
+                }));
 
-//        var player = stage.insert(new Q.Player());
+        stage.player = stage.insert(new Q.Player(Q.tilePos(10,7)));
 
-//        stage.add("viewport").follow(player);
+        stage.nextRound = function(){
+            this.player.RaceControl.nextRound();
+        }
+
         stage.add("viewport");
-//        stage.insert(new Q.Enemy({ x: 700, y: 0 }));
-//        stage.insert(new Q.Enemy({ x: 800, y: 0 }));
-//
-//        stage.insert(new Q.Tower({ x: 180, y: 50 }));
+
     });
 
-    Q.load("/webracer/WebracerWeb/tiles.png, /webracer/WebracerWeb/track.json", function() {
+    Q.load("/webracer/WebracerWeb/tiles.png, /webracer/WebracerWeb/track.json, /webracer/WebracerWeb/cars.png, /webracer/WebracerWeb/cars.json", function() {
+        // no gravity please :)
+        Q.gravityX = 0;
+        Q.gravityY = 0;
+
+        // initial steering and speed
+        Q.state.set({steering: STEERING_STRAIGHT});
+        Q.state.set({speed: 0});
+
+        // sheets
         Q.sheet("tiles","/webracer/WebracerWeb/tiles.png", { tilew: 9, tilew: 9 });
-        Q.stageScene("track");
+        Q.compileSheets("/webracer/WebracerWeb/cars.png","/webracer/WebracerWeb/cars.json");
+
+        // init stage
+        Q.stageScene("track", 0);
+
+        // start timeout (for client only testing)
+        window.setTimeout(nextRound, TIMEOUT);
     });
 
-
+    this.nextRound = function() {
+        Q.stage(0).nextRound();
+        window.setTimeout(nextRound, TIMEOUT);
+    }
 
 </script>
 
