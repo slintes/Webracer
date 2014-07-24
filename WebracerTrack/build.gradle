@@ -9,7 +9,6 @@ bundle {
             'Bundle-Name': 'Webracer-Track',
             'Bundle-Description': 'Track component for Webracer project',
             'Bundle-SymbolicName': 'net.slintes.webracer.track',
-//            'Bundle-Activator': 'net.slintes.webracer.track.TrackActivator',
             'Export-Package': 'net.slintes.webracer.track',
             'Import-Package': 'org.osgi.framework'
     ]

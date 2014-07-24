@@ -1,0 +1,26 @@
+version = "$track1Version"
+
+dependencies {
+    provided "net.slintes.webracer:track:$trackVersion"
+}
+
+jar {
+    archiveName = "$jar.baseName.$jar.extension"
+}
+
+bundle {
+    instructions << [
+            'Bundle-Name': 'WebracerTrackImpl-1',
+            'Bundle-Description': 'Track implementation 1',
+            'Bundle-SymbolicName': 'net.slintes.webracer.track.one',
+            'Bundle-Activator': 'net.slintes.webracer.track.one.TrackActivator',
+            'Export-Package': 'net.slintes.webracer.track.one',
+            'Import-Package': 'net.slintes.webracer.track,org.osgi.framework'
+    ]
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.artifactId = 'track-1-impl'
+    }
+}

@@ -28,9 +28,14 @@ public class Starter {
             Bundle race = context.installBundle("file:repoOsgi/WebracerRace.jar");
             Bundle web = context.installBundle("file:repoOsgi/WebracerWeb.jar");
             Bundle car = context.installBundle("file:repoOsgi/WebracerCar.jar");
+            Bundle track = context.installBundle("file:repoOsgi/WebracerTrack.jar");
+            Bundle track1impl = context.installBundle("file:repoOsgi/WebracerTrack1Impl.jar");
 
             // Start and stop framework and bundles
             framework.start();
+
+            track.start();
+            track1impl.start();
             car.start();
             web.start();
             race.start();

@@ -1,6 +1,6 @@
 package net.slintes.webracer.web.impl;
 
-import net.slintes.webracer.race.RaceCallback;
+import net.slintes.webracer.race.Web2RaceCallback;
 import net.slintes.webracer.web.Web;
 
 /**
@@ -9,7 +9,7 @@ import net.slintes.webracer.web.Web;
 public class WebImpl implements Web {
 
     private WebServer webServer;
-    private RaceCallback raceCallback;
+    private Web2RaceCallback raceCallback;
 
     @Override
     public void start() {
@@ -20,7 +20,7 @@ public class WebImpl implements Web {
     }
 
     @Override
-    public void registerRaceCallback(RaceCallback raceCallback) {
+    public void registerRaceCallback(Web2RaceCallback raceCallback) {
         this.raceCallback = raceCallback;
     }
 
@@ -29,13 +29,15 @@ public class WebImpl implements Web {
         webServer.sendMessage(clientId, message);
     }
 
-    public void registerClient(String id){
+    public void registerCar(String id){
         raceCallback.registerCar(id);
     }
 
-    public void unRegisterClient(String id) {
+    public void unRegisterCar(String id) {
         raceCallback.unRegisterCar(id);
     }
 
-
+    public String getTrack() {
+        return raceCallback.getTrack();
+    }
 }

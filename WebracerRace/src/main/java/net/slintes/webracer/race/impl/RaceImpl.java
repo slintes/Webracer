@@ -1,9 +1,9 @@
 package net.slintes.webracer.race.impl;
 
 import net.slintes.webracer.car.CarFactory;
-import net.slintes.webracer.race.CarCommand;
 import net.slintes.webracer.race.Race;
-import net.slintes.webracer.race.RaceCallback;
+import net.slintes.webracer.race.Web2RaceCallback;
+import net.slintes.webracer.track.Track;
 import net.slintes.webracer.web.Web;
 
 /**
@@ -13,22 +13,24 @@ public class RaceImpl implements Race {
 
     private final CarFactory carFactory;
     private final Web web;
+    private final Track track;
 
-    public RaceImpl(CarFactory carFactory, Web web){
+    public RaceImpl(CarFactory carFactory, Web web, Track track){
         System.out.println("new Race");
 
         this.carFactory = carFactory;
         this.web = web;
+        this.track = track;
 
         start();
     }
 
     private void start() {
-        web.registerRaceCallback(new RaceCallbackImpl());
+        web.registerRaceCallback(new Web2RaceCallbackImpl());
         web.start();
     }
 
-    class RaceCallbackImpl implements RaceCallback {
+    class Web2RaceCallbackImpl implements Web2RaceCallback {
         @Override
         public void registerCar(String Id) {
             carFactory.newCar();
@@ -41,8 +43,8 @@ public class RaceImpl implements Race {
         }
 
         @Override
-        public void executeCarCommand(CarCommand command) {
-            // TODO
+        public String getTrack() {
+            return track.getTrack();
         }
     }
 

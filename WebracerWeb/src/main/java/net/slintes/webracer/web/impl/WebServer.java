@@ -44,6 +44,12 @@ public class WebServer {
         resourceContext.setContextPath("/");
         resourceContext.setHandler(resourceHandler);
 
+        // create resource handler for track
+        TrackHandler trackHandler = new TrackHandler(web.getTrack());
+        ContextHandler trackContext = new ContextHandler();
+        trackContext.setContextPath("/track/");
+        trackContext.setHandler(trackHandler);
+
         // create websocket handler
         WebSocketHandler wsHandler = new WebSocketHandler()
         {
@@ -62,7 +68,7 @@ public class WebServer {
 
         // add resource handler to the server.
         HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[] { resourceContext, websocketContext, new DefaultHandler() });
+        handlers.setHandlers(new Handler[] { trackContext, resourceContext, websocketContext, new DefaultHandler() });
         server.setHandler(handlers);
 
         // start jetty
@@ -99,12 +105,12 @@ public class WebServer {
 
     public void registerClient(WebWebSocketAdapter webWebSocketAdapter) {
         clientSessions.add(webWebSocketAdapter);
-        web.registerClient(getClientId(webWebSocketAdapter));
+        web.registerCar(getClientId(webWebSocketAdapter));
     }
 
     public void unRegisterClient(WebWebSocketAdapter webWebSocketAdapter) {
         clientSessions.remove(webWebSocketAdapter);
-        web.unRegisterClient(getClientId(webWebSocketAdapter));
+        web.unRegisterCar(getClientId(webWebSocketAdapter));
     }
 
     public void onMessage(String message) {
