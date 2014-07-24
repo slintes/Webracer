@@ -9,132 +9,147 @@
 
 <script>
 
-//    var grid = "" +
-//            "#####################################################################################################################################################################\n" +
-//            "#...                                                                                                                        s                              .........#\n" +
-//            "#...                                                                                                                        s                                 ......#\n" +
-//            "#...                                                                                                                        s                                  .....#\n" +
-//            "#...                                                                                                                        s                                  .....#\n" +
-//            "#...                                                                                                                        s                                  .....#\n" +
-//            "#...                                                                                                              #####################################        .....#\n" +
-//            "#...                                                                                                                             #...............              .....#\n" +
-//            "#...                                                                                                                             #..........                   .....#\n" +
-//            "#...                                                                                                                             #.......                      .....#\n" +
-//            "#...                                                                                                                             #......                      ......#\n" +
-//            "#...                                                                                                                             #.....                .............#\n" +
-//            "#...                                                                                                                             #......            #################\n" +
-//            "#...                                                                                                                             #.......               ............#\n" +
-//            "#...                                                                                                                             #..........                ........#\n" +
-//            "#...                                                                                                                             #...............              .....#\n" +
-//            "#...                                                                                                                             #.................             ....#\n" +
-//            "#...                                                                                                                             #.....................           ..#\n" +
-//            "#...                                                                                                                             ####################.....        ..#\n" +
-//            "#...                                                                                                                                                ##......      ..#\n" +
-//            "#...                                                                                                                                                 #......      ..#\n" +
-//            "#...                                                                                                                                                 #.......     ..#\n" +
-//            "#...                                                                                                                                                 #.......     ..#\n" +
-//            "#...                                                                                                                                                 #.......     ..#\n" +
-//            "#...                                                                                                                                                ##.......     ..#\n" +
-//            "#...                                                                                                                                               ##........     ..#\n" +
-//            "#...                                                                                                                   #############################........      ..#\n" +
-//            "#...                                                                                                                ####...................................       ..#\n" +
-//            "#...                                                                                                           ######.....................................        ..#\n" +
-//            "#...                                                                                              ##############.........................................        ...#\n" +
-//            "#...                                                              #################################.................            ........................        ....#\n" +
-//            "#...                                                     ##########...........................................                     ...................         .....#\n" +
-//            "#...       ###############################################............................................                                 ............           ......#\n" +
-//            "#...                                               f                                                                                                         .......#\n" +
-//            "#...                   S  Q  O  M  K  I  G  E  C  Af                                                                   ......                              .........#\n" +
-//            "#...                                               f                                                                ............                         ...........#\n" +
-//            "#.......              T  R  P  N  L  J  F  H  D  B f                                                          .......................                ...............#\n" +
-//            "#.............                                     f                                                  ..............................................................#\n" +
-//            "#.......##################################################..........................................................................................................#\n" +
-//            "#####################################################################################################################################################################\n";
-//
-//    // convert grid to quintus style array of arrays
-//    grid = grid.replace(/ /g, "0"); // asphalt
-//    grid = grid.replace(/\./g, "1"); // grass
-//    grid = grid.replace(/#/g, "2"); // wall
-//    grid = grid.replace(/f/g, "3"); // start / finish
-//    grid = grid.replace(/[A-Z]/g, "4"); // startpositions
-//    grid = grid.replace(/s/g, "5"); // sector
-//
-//    var width = grid.indexOf("\n");
-//    grid = grid.replace(/\n/g, ""); // remove linebreaks
-//
-//    var height = grid.length / width;
-//
-//    var tiles = new Array(height);
-//    for(var i=0; i<height; i++){
-//        var line = grid.substr(i * width, width);
-//        var tileLine = new Array(width);
-//        for(var j=0; j<width; j++){
-//            tileLine[j] = parseInt(line[j])
-//        }
-//        tiles[i] = tileLine;
-//    }
+    // some constants
 
+    // path to data
+    var PATH = "/webracer/WebracerWeb/"
+
+    // tile type numbers
+    var TILE_ASPHALT = 1;
+    var TILE_GRASS = 2;
+    var TILE_WALL = 3;
+    var TILE_FINISH = 4;
+    var TILE_STARTPOS = 5;
+    var TILE_SECTOR1 = 6;
+    var TILE_SECTOR2 = 7;
+
+    // time per round in milliseconds
     var TIMEOUT = 1000;
 
+    // speed in px / TIMEOUT
     var SPEED1 = 10;
     var SPEED2 = 30;
 
+    // steering left/right
     var DEGREES = 30;
-    var STEERING_STRAIGHT = "steerStraight";
-    var STEERING_LEFT = "steerLeft";
-    var STEERING_RIGHT = "steerRight";
 
-    var KEY_UP = "up";
-    var KEY_DOWN = "down";
+    // steering status values
+    var STEERING_STRAIGHT = "straight";
+    var STEERING_LEFT = "left";
+    var STEERING_RIGHT = "right";
+
+    // key status values
+    var KEY_UP = "acc";
+    var KEY_DOWN = "brake";
     var KEY_LEFT = "left";
     var KEY_RIGHT = "right";
     var KEY_NONE = "none";
 
+    // tile size
+    var TILESIZE = 9;
+
+    // init Quintus
     var Q = Quintus()
             .include("Sprites, Scenes, Input, 2D, UI")
             .setup({maximize: true})
             .controls(true);
 
+    // helper method for converting pixel / tile position
     Q.tilePos = function(col, row) {
-        return { x: col * 9, y: row* 9 };
+        return { x: col * TILESIZE, y: row * TILESIZE };
     }
 
+    // disable default collision handling of 2d component,
+    // we handle it in our RaceControl component
+    var dd = Q.components["2d"].prototype.collision = function(x, y){};
+
+    // behaviour of players car
     Q.component("RaceControl", {
 
         added: function() {
             var p = this.entity.p;
 
+            // speed
             p.stepDistance = 0;
-            p.stepDelay = 1;
+
+            // time per round in seconds
+            p.stepDelay = TIMEOUT / 1000;
+
+            // helper for keeping track of time
             p.stepWait = 0;
 
+            // reigister event handlers
             this.entity.on("hit", this,"collision");
             this.entity.on("step",this,"step");
         },
 
         collision: function(col) {
+
             var p = this.entity.p;
+            var tileNum = col.tile;
+
+            // handle grass
+            if(tileNum == TILE_GRASS){
+                if(Q.state.get("speed") == SPEED2){
+                    Q.state.set({speed: SPEED1})
+                    Q.state.set({onGrass: true})
+                }
+            }
+            else {
+                Q.state.set({onGrass: false})
+            }
+
+            // handle wall
+            if(tileNum == TILE_WALL){
+                p.broken = true;
+                p.diffX = 0;
+                p.diffY = 0;
+            }
+
+            // handle sector 1
+            if(tileNum == TILE_SECTOR1){
+                // TODO
+            }
+            // handle sector 2
+            if(tileNum == TILE_SECTOR2){
+                // TODO
+            }
+            // handle finish
+            if(tileNum == TILE_FINISH){
+                // TODO
+            }
         },
 
         step: function(dt) {
-            var p = this.entity.p, moved = false;
 
+            var p = this.entity.p;
+
+            if(p.broken){
+                return;
+            }
+
+            var moved = false;
+
+            // keep track of time
             p.stepWait -= dt;
 
+            // move
             if(p.stepping) {
                 p.x += p.diffX * dt / p.stepDelay;
                 p.y += p.diffY * dt / p.stepDelay;
             }
 
+            // next round?
             if(p.stepWait > 0) { return; }
 
+            // move to end position if not there yet
             if(p.stepping) {
                 p.x = p.destX;
                 p.y = p.destY;
             }
 
+            // stop moving
             p.stepping = false;
-
             p.diffX = 0;
             p.diffY = 0;
 
@@ -142,10 +157,17 @@
 
         nextRound: function() {
 
-            console.log("player step");
+            // calculate next round
+
+//            console.log("player step");
 
             var p = this.entity.p;
 
+            if(p.broken){
+                return;
+            }
+
+            // get last pressed key and reset
             var lastKey = Q.state.get("lastKey");
             Q.state.set({lastKey: KEY_NONE});
 
@@ -164,12 +186,14 @@
                     steering = STEERING_RIGHT;
                 }
             }
+            Q.state.set({steering: steering})
+
+            // rotate car according to steering
             if(steering == STEERING_LEFT){
                 p.angle -= DEGREES;
             } else if(steering == STEERING_RIGHT){
                 p.angle += DEGREES;
             }
-            Q.state.set({steering: steering})
 
             // set new speed
             var speed = Q.state.get("speed");
@@ -177,7 +201,10 @@
                 if(speed == 0){
                     speed = SPEED1;
                 } else if(speed == SPEED1){
-                    speed = SPEED2;
+                    // prevent speeds2 on grass
+                    if(!Q.state.get("onGrass")){
+                        speed = SPEED2;
+                    }
                 }
             } else if(lastKey == KEY_DOWN) {
                 if(speed == SPEED2){
@@ -189,10 +216,11 @@
             Q.state.set({speed: speed})
             p.stepDistance = speed;
 
-            // calculate way to
+            // calculate x and y of movement
             p.diffX = (Math.sin(2 * Math.PI * p.angle / 360) * p.stepDistance);
             p.diffY = - (Math.cos(2 * Math.PI * p.angle / 360) * p.stepDistance);
 
+            // prepare movement
             if(p.diffY || p.diffX ) {
                 p.stepping = true;
                 p.origX = p.x;
@@ -206,20 +234,22 @@
 
     });
 
+    // the player
     Q.Sprite.extend("Player",{
         init: function(p) {
             this._super(p, {
                 sheet: "car1",
-                scale: 1.2,
-                angle: 90,
-                broken: false,
-                vx: 0,
-                vy: 0,
-                gravityX: 0,
+                scale: 1.2, // make car a bit bigger
+                angle: 90, // starting position: heading right
+                broken: false, // track if car is broken = hit the wall
+                gravityX: 0, // oh, no gravity please :)
                 gravityY: 0
             });
+
+            // add the 2d and our RaceControl component
             this.add("2d, RaceControl");
 
+            // save the latest key press
             upPressed = function() {
                 Q.state.set({lastKey: KEY_UP});
             };
@@ -238,7 +268,6 @@
             Q.input.on("left", this, leftPressed);
             Q.input.on("right", this, rightPressed);
 
-
         }
 
     });
@@ -250,26 +279,28 @@
 //        }
 //    });
 
-    Q.TileLayer.extend("RaceTileLayer",{
+    // extend default TileLayer for custom collision handling
+    Q.TileLayer.extend("RaceTileLayer", {
         collidableTile: function(tileNum) {
-            Q.state.set({lastCollision: tileNum});
-            // ignore asphalt and starting grid
-            return tileNum != 1 && tileNum != 5
+            // starting grid is uninteresting
+            return tileNum > 0 && tileNum != 5;
         }
     });
 
+    // the track
     Q.scene("track", function(stage) {
-
         stage.collisionLayer(
                 new Q.RaceTileLayer({
-                    dataAsset: "/webracer/WebracerWeb/track.json",
+                    dataAsset: PATH + "track.json",
                     sheet: "tiles",
                     tileW: 9,
                     tileH: 9
                 }));
 
-        stage.player = stage.insert(new Q.Player(Q.tilePos(10,7)));
+        // add our car
+        stage.player = stage.insert(new Q.Player(Q.tilePos(50, 35)));
 
+        // new function for round based gameplay, forward to player
         stage.nextRound = function(){
             this.player.RaceControl.nextRound();
         }
@@ -278,26 +309,60 @@
 
     });
 
-    Q.load("/webracer/WebracerWeb/tiles.png, /webracer/WebracerWeb/track.json, /webracer/WebracerWeb/cars.png, /webracer/WebracerWeb/cars.json", function() {
-        // no gravity please :)
-        Q.gravityX = 0;
-        Q.gravityY = 0;
+    Q.scene('info',function(stage) {
+        box = stage.insert(new Q.UI.Container({
+            x: 0, y: 0, fill: "rgba(0, 0, 0, 0.3)"
+        }));
+        infotext = box.insert(
+                new Q.UI.Text({x: 200, y: 70, label: "                                            \n \n "})
+        );
+        box.fit(5);
 
-        // initial steering and speed
-        Q.state.set({steering: STEERING_STRAIGHT});
-        Q.state.set({speed: 0});
+        updateStatus = function() {
+            infotext.p.label = "speed: " + Q.state.get("speed") +
+                "\nsteering: " + Q.state.get("steering") +
+                "\nnextCommand: " + Q.state.get("lastKey");
+        }
 
-        // sheets
-        Q.sheet("tiles","/webracer/WebracerWeb/tiles.png", { tilew: 9, tilew: 9 });
-        Q.compileSheets("/webracer/WebracerWeb/cars.png","/webracer/WebracerWeb/cars.json");
+        Q.state.on("change.speed", updateStatus);
+        Q.state.on("change.steering", updateStatus);
+        Q.state.on("change.lastKey", updateStatus);
 
-        // init stage
-        Q.stageScene("track", 0);
-
-        // start timeout (for client only testing)
-        window.setTimeout(nextRound, TIMEOUT);
     });
 
+    // preload all needed data, init some things when done
+    Q.load(PATH + "tiles.png, " +
+            PATH + "track.json, " +
+            PATH + "cars.png, " +
+            PATH + "cars.json",
+
+        function() {
+            // no gravity please :)
+            Q.gravityX = 0;
+            Q.gravityY = 0;
+
+            // initial state
+            Q.state.set({steering: STEERING_STRAIGHT});
+            Q.state.set({speed: 0});
+            Q.state.set({onGrass: false});
+
+            // the graphics of the track
+            Q.sheet("tiles", PATH + "tiles.png", { tilew: 9, tileh: 9 });
+            // the cars
+            Q.compileSheets(PATH + "cars.png", PATH + "cars.json");
+
+            // init stage with the track
+            Q.stageScene("track", 0);
+
+            // init stage with infos
+            Q.stageScene("info", 1);
+
+            // start timeout (for client only testing)
+            window.setTimeout(nextRound, TIMEOUT);
+        }
+    );
+
+    // handle round based gameplay
     this.nextRound = function() {
         Q.stage(0).nextRound();
         window.setTimeout(nextRound, TIMEOUT);
