@@ -16,7 +16,7 @@ bundle {
             'Bundle-Description': 'Web component for Webracer project',
             'Bundle-SymbolicName': 'net.slintes.webracer.web',
             'Bundle-Activator': 'net.slintes.webracer.web.WebActivator',
-            'Export-Package': 'net.slintes.webracer.web',
+            'Export-Package': '',
             'Import-Package': 'net.slintes.webracer.race,org.osgi.framework'
     ]
 }

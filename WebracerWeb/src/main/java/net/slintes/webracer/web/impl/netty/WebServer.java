@@ -57,7 +57,6 @@ public class WebServer {
             @Override
             public void configure(WebSocketServletFactory factory)
             {
-//                factory.register(WebWebSocketAdapter.class);
                 factory.setCreator(
                         (servletUpgradeRequest, servletUpgradeResponse)
                                 -> new WebWebSocketAdapter(WebServer.this));
@@ -67,7 +66,7 @@ public class WebServer {
         websocketContext.setContextPath("/ws");
         websocketContext.setHandler(wsHandler);
 
-        // add resource handler to the server.
+        // add resource handlers to the server.
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[] { trackContext, resourceContext, websocketContext, new DefaultHandler() });
         server.setHandler(handlers);
@@ -78,6 +77,7 @@ public class WebServer {
             server.join();
         } catch (Exception e) {
             // no good...
+            e.printStackTrace();
         }
 
     }
@@ -85,7 +85,7 @@ public class WebServer {
     public void sendMessage(String clientId, String message) {
         System.out.println("message to client " + clientId + ": " + message);
 
-        // find session
+        // find websocket session
         Optional<WebWebSocketAdapter> wsAdapterOptional = clientSessions.stream().
                 filter(wsa -> clientId.equals(getClientId(wsa))).
                 findFirst();

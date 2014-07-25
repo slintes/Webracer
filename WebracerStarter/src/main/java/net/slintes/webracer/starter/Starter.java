@@ -34,11 +34,12 @@ public class Starter {
             // Start and stop framework and bundles
             framework.start();
 
+            // order is important...
             track.start();
             track1impl.start();
             car.start();
-            web.start();
             race.start();
+            web.start();
 
 //            framework.stop();
         }

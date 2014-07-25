@@ -5,6 +5,35 @@
 </head>
 <body>
 
+<script>
+    var connection;
+
+    function connect() {
+        var url = "ws://" + window.location.host + "/ws/";
+        connection = new WebSocket(url);
+        connection.onerror = function (error) {
+            console.log("webSocket error " + error);
+        };
+        connection.onmessage = function (message) {
+            console.log("webSocket message " + message.data);
+            alert(message.data);
+        };
+    }
+
+    function disconnect() {
+        connection.close();
+    }
+
+    function sendMessage() {
+        console.log("sending message: " + message);
+        connection.send(message);
+    }
+
+    connect();
+
+</script>
+
+
 <script src='http://cdn.html5quintus.com/v0.2.0/quintus-all.js'></script>
 
 <script>
