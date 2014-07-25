@@ -1,5 +1,6 @@
-package net.slintes.webracer.web.impl;
+package net.slintes.webracer.web.impl.netty;
 
+import net.slintes.webracer.web.impl.WebImpl;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;

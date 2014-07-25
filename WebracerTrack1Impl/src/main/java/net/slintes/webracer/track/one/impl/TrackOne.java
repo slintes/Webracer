@@ -24,7 +24,7 @@ public class TrackOne implements Track {
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource.openStream()));
             String inputLine;
             while ((inputLine = reader.readLine()) != null) {
-                track.append(inputLine);
+                track.append(inputLine).append("\n");
             }
             reader.close();
         } catch (IOException e) {

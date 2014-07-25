@@ -291,7 +291,7 @@
     Q.scene("track", function(stage) {
         stage.collisionLayer(
                 new Q.RaceTileLayer({
-                    dataAsset: PATH + "track.json",
+                    dataAsset: PATH + "track/track.json",
                     sheet: "tiles",
                     tileW: 9,
                     tileH: 9
@@ -332,7 +332,7 @@
 
     // preload all needed data, init some things when done
     Q.load(PATH + "tiles.png, " +
-            PATH + "track.json, " +
+            PATH + "track/track.json, " +
             PATH + "cars.png, " +
             PATH + "cars.json",
 

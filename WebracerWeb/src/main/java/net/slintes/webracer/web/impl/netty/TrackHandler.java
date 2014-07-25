@@ -1,4 +1,4 @@
-package net.slintes.webracer.web.impl;
+package net.slintes.webracer.web.impl.netty;
 
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- *
+ * netty handler for track json
  */
 public class TrackHandler extends AbstractHandler {
 

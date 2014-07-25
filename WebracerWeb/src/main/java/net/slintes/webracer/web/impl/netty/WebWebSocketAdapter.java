@@ -1,4 +1,4 @@
-package net.slintes.webracer.web.impl;
+package net.slintes.webracer.web.impl.netty;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;

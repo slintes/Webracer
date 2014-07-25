@@ -2,6 +2,7 @@ package net.slintes.webracer.web.impl;
 
 import net.slintes.webracer.race.Web2RaceCallback;
 import net.slintes.webracer.web.Web;
+import net.slintes.webracer.web.impl.netty.WebServer;
 
 /**
  *
@@ -38,6 +39,6 @@ public class WebImpl implements Web {
     }
 
     public String getTrack() {
-        return raceCallback.getTrack();
+        return new TrackConverter().convertToJson(raceCallback.getTrack());
     }
 }
