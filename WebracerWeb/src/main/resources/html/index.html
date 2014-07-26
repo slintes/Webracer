@@ -12,11 +12,10 @@
         var url = "ws://" + window.location.host + "/ws/";
         connection = new WebSocket(url);
         connection.onerror = function (error) {
-            console.log("webSocket error " + error);
+            console.log("webSocket error: " + error);
         };
         connection.onmessage = function (message) {
-            console.log("webSocket message " + message.data);
-            alert(message.data);
+            console.log("webSocket message: " + message.data);
         };
     }
 

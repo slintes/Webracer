@@ -35,7 +35,10 @@ public class WebWebSocketAdapter extends WebSocketAdapter {
 
     @Override
     public void onWebSocketError(Throwable cause) {
+
         System.out.println("websocket error: " + cause.getMessage());
+        webServer.unRegisterClient(this);
+
         super.onWebSocketError(cause);
     }
 

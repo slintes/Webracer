@@ -1,5 +1,6 @@
 package net.slintes.webracer.web.impl;
 
+import net.slintes.webracer.race.Car;
 import net.slintes.webracer.race.Race;
 import net.slintes.webracer.race.UICallback;
 import net.slintes.webracer.web.impl.netty.WebServer;
@@ -17,20 +18,19 @@ public class WebImpl {
     }
 
     public void start() {
-
-        race.setUICallback(new WebUICallback());
-
         webServer = new WebServer(this);
         webServer.start();
 
+        race.setUICallback(new WebUICallback());
     }
 
     public void registerCar(String id){
-        race.registerCar(id);
+        race.registerClient(id);
+        race.registerCar(id, "testname");
     }
 
     public void unRegisterCar(String id) {
-        race.unRegisterCar(id);
+        race.unRegisterClient(id);
     }
 
     public String getTrack() {
@@ -39,8 +39,33 @@ public class WebImpl {
 
     class WebUICallback implements UICallback {
         @Override
-        public void sendMessage(String carId, String message) {
-            webServer.sendMessage(carId, message);
+        public void start() {
+
+        }
+
+        @Override
+        public void addCar(Car car) {
+
+        }
+
+        @Override
+        public void updateCar(Car car) {
+
+        }
+
+        @Override
+        public void showMessage(String s) {
+            webServer.sendMessage(s);
+        }
+
+        @Override
+        public void showResults() {
+
+        }
+
+        @Override
+        public void reset() {
+
         }
     }
 

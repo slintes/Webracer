@@ -74,34 +74,39 @@ public class WebServer {
         // start jetty
         try {
             server.start();
-            server.join();
         } catch (Exception e) {
-            // no good...
             e.printStackTrace();
         }
 
     }
 
-    public void sendMessage(String clientId, String message) {
-        System.out.println("message to client " + clientId + ": " + message);
+    public void sendMessage(String message){
+        clientSessions.stream().forEach(wsa -> sendMessage(wsa, message));
+    }
 
+    public void sendMessage(String clientId, String message) {
         // find websocket session
         Optional<WebWebSocketAdapter> wsAdapterOptional = clientSessions.stream().
                 filter(wsa -> clientId.equals(getClientId(wsa))).
                 findFirst();
 
         if(wsAdapterOptional.isPresent()){
-            try {
-                // send message
-                wsAdapterOptional.get().getRemote().sendString(message);
-            } catch (IOException e) {
-                System.out.println("error sending message" + e.getMessage());
-            }
+            sendMessage(wsAdapterOptional.get(), message);
         }
         else {
             System.out.println("client not found: " + clientId);
         }
 
+    }
+
+    private void sendMessage(WebWebSocketAdapter wsa, String message) {
+        System.out.println("message to client " + getClientId(wsa) + ": " + message);
+        try {
+            // send message
+            wsa.getRemote().sendString(message);
+        } catch (IOException e) {
+            System.out.println("error sending message" + e.getMessage());
+        }
     }
 
     public void registerClient(WebWebSocketAdapter webWebSocketAdapter) {

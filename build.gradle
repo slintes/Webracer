@@ -21,7 +21,6 @@ ext {
     starterVersion = '0.1.0.SNAPSHOT'
     webVersion = '0.1.0.SNAPSHOT'
     raceVersion = '0.1.0.SNAPSHOT'
-    carVersion = '0.1.0.SNAPSHOT'
     trackVersion = '0.1.0.SNAPSHOT'
     track1Version = '0.1.0.SNAPSHOT'
 }
@@ -79,7 +78,6 @@ dependencies {
     compile project(":WebracerWeb")
     compile project(":WebracerTrack")
     compile project(":WebracerTrack1Impl")
-    compile project(":WebracerCar")
     compile project(":WebracerRace")
     compile project(":WebracerStarter")
 
