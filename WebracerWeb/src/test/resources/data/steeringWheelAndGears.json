@@ -1,0 +1,50 @@
+{
+"wheel": {
+    "sx": 0,
+    "sy": 0,
+    "cols": 1,
+    "tilew": 229,
+    "tileh": 215,
+    "frames": 1
+},
+"gearN": {
+    "sx": 230,
+    "sy": 0,
+    "cols": 1,
+    "tilew": 100,
+    "tileh": 215,
+    "frames": 1
+},
+"gear1": {
+    "sx": 330,
+    "sy": 0,
+    "cols": 1,
+    "tilew": 100,
+    "tileh": 215,
+    "frames": 1
+},
+"gear2": {
+    "sx": 430,
+    "sy": 0,
+    "cols": 1,
+    "tilew": 100,
+    "tileh": 215,
+    "frames": 1
+},
+"arrow": {
+    "sx": 530,
+    "sy": 0,
+    "cols": 1,
+    "tilew": 215,
+    "tileh": 215,
+    "frames": 1
+},
+"arrowEmpty": {
+    "sx": 745,
+    "sy": 0,
+    "cols": 1,
+    "tilew": 215,
+    "tileh": 215,
+    "frames": 1
+}
+}
