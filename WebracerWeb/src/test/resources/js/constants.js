@@ -1,4 +1,4 @@
-// some constants, DO NOT EDIT
+// some global constants, DO NOT EDIT
 
 // path to data
 var PATH = "/webracer/WebracerWeb/"
@@ -23,10 +23,3 @@ var KEY_DOWN = "brake";
 var KEY_LEFT = "left";
 var KEY_RIGHT = "right";
 var KEY_NONE = "none";
-
-// track tile size
-var TILESIZE = 9;
-
-// scaling of steering wheel and gear
-var scaleWheelAndGears = 0.3;
-

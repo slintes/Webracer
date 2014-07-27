@@ -133,6 +133,7 @@
             } else if (steering == STEERING_RIGHT) {
                 p.angle += DEGREES;
             }
+            Q.state.set({steeringAngle: p.angle})
 
             // set new speed
             var speed = Q.state.get("speed");

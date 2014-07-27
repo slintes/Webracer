@@ -1,4 +1,4 @@
-// some variables, editable
+// some global variables, editable
 
 // time per round in milliseconds
 var TIMEOUT = 1000;

@@ -4,7 +4,7 @@
     Q.TileLayer.extend("RaceTileLayer", {
         collidableTile: function (tileNum) {
             // starting grid is uninteresting
-            return tileNum > 0 && tileNum != 5;
+            return tileNum > 0 && tileNum != TILE_STARTPOS;
         }
     });
 

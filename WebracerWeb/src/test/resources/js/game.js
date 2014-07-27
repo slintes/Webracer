@@ -1,13 +1,14 @@
 window.addEventListener('load', function () {
 
     // init Quintus
-    var Q = Quintus()
+    var Q = window.Q = Quintus()
         .include("Sprites, Scenes, Input, 2D, UI")
         .include("WebracerPlayer, WebracerTrack, WebracerTextStatus, WebracerGraphicalStatus")
         .setup({maximize: true})
         .controls(true);
 
     // helper method for converting pixel / tile position
+    var TILESIZE = 9;
     Q.tilePos = function (col, row) {
         return { x: col * TILESIZE, y: row * TILESIZE };
     }
@@ -31,11 +32,12 @@ window.addEventListener('load', function () {
 
             // initial state
             Q.state.set({steering: STEERING_STRAIGHT});
+            Q.state.set({steeringAngle: 90})
             Q.state.set({speed: 0});
             Q.state.set({onGrass: false});
 
             // the graphics of the track
-            Q.sheet("tiles", PATH + "images/track.png", { tilew: 9, tileh: 9 });
+            Q.sheet("tiles", PATH + "images/track.png", { tilew: TILESIZE, tileh: TILESIZE});
 
             // the cars
             Q.compileSheets(PATH + "images/cars.png", PATH + "data/cars.json");
@@ -46,8 +48,8 @@ window.addEventListener('load', function () {
             // init stage with the track
             Q.stageScene("track", 0);
 
-//            // init stage with steering and gear status
-//            Q.stageScene("graphicalStatus", 1);
+            // init stage with steering and gear status
+            Q.stageScene("graphicalStatus", 1);
 
             // init stage with infos
 //            Q.stageScene("textStatus", 2);
@@ -56,8 +58,6 @@ window.addEventListener('load', function () {
             window.setTimeout(nextRound, TIMEOUT);
         }
     );
-
-    window.Q = Q;
 
     // handle round based gameplay
     this.nextRound = function () {
