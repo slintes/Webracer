@@ -2,8 +2,8 @@ version = "$webVersion"
 
 dependencies {
     provided "net.slintes.webracer:race:$raceVersion"
-    compile files('libs/jetty-all.jar')
-    compile files('libs/servlet-api-3.1.jar')
+    compile 'org.eclipse.jetty:jetty-server:9.2.1.v20140609'
+    compile 'org.eclipse.jetty.websocket:websocket-server:9.2.1.v20140609'
 }
 
 jar {
