@@ -1,4 +1,4 @@
-package net.slintes.webracer.web.impl;
+package net.slintes.webracer.web.impl.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;

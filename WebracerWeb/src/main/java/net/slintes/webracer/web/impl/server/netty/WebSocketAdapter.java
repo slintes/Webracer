@@ -1,16 +1,16 @@
-package net.slintes.webracer.web.impl.netty;
+package net.slintes.webracer.web.impl.server.netty;
 
+import net.slintes.webracer.web.impl.server.WebServer;
 import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 
 /**
- *
+ * websocket adapter
  */
-public class WebWebSocketAdapter extends WebSocketAdapter {
+public class WebSocketAdapter extends org.eclipse.jetty.websocket.api.WebSocketAdapter {
 
     private final WebServer webServer;
 
-    public WebWebSocketAdapter(WebServer web){
+    public WebSocketAdapter(WebServer web){
         this.webServer = web;
     };
 

@@ -1,4 +1,4 @@
-package net.slintes.webracer.web.impl.netty;
+package net.slintes.webracer.web.impl.server.netty;
 
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
