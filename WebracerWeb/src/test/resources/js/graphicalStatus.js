@@ -31,7 +31,7 @@
         box = stage.insert(new Q.UI.Container({
             fill: "rgba(0,0,255,0.3)",
             border: 2,
-            x: 600,
+            x: 350,
             y: 450,
             scale: 0.5
         }));

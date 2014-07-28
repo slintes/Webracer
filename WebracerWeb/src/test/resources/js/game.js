@@ -4,7 +4,7 @@ window.addEventListener('load', function () {
     var Q = window.Q = Quintus()
         .include("Sprites, Scenes, Input, 2D, UI")
         .include("WebracerPlayer, WebracerTrack, WebracerTextStatus, WebracerGraphicalStatus")
-        .setup({maximize: true})
+        .setup({width: 800, height: 700})
         .controls(true);
 
     // helper method for converting pixel / tile position

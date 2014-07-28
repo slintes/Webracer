@@ -21,12 +21,12 @@
         // add our car
         stage.player = stage.insert(new Q.Player(Q.tilePos(50, 35)));
 
+        stage.add("viewport").follow(stage.player);
+
         // new function for round based gameplay, forward to player
         stage.nextRound = function () {
             this.player.RaceControl.nextRound();
         }
-
-        stage.add();
 
     });
 
