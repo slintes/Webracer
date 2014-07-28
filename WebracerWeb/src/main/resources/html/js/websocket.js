@@ -18,8 +18,9 @@
         connection.onmessage = function (message) {
             console.log("received message: " + message.data);
 
-            var command = message.data.command;
-            var data = message.data.data;
+            var jsonMessage = JSON.parse(message.data);
+            var command = 'ws-' + jsonMessage.command;
+            var data = jsonMessage.data;
 
             // set command to Quintus state, so we can add state change listeners
             // where we need to react on commands
@@ -34,5 +35,13 @@
     }
 
     connect();
+
+
+    testMessage = function(data) {
+        console.log("TEST MESSAGE FROM STATE: " + data.message);
+    }
+
+    Q.state.on("change.ws-message", testMessage);
+
 
 };

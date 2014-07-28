@@ -3,6 +3,8 @@ package net.slintes.webracer.web.impl.server;
 import net.slintes.webracer.race.Car;
 import net.slintes.webracer.race.Race;
 import net.slintes.webracer.race.UICallback;
+import net.slintes.webracer.web.impl.server.commands.server.ServerCommand;
+import net.slintes.webracer.web.impl.server.commands.server.impl.ServerMessageCommand;
 import net.slintes.webracer.web.impl.server.netty.WebServerStarter;
 import net.slintes.webracer.web.impl.server.netty.WebSocketAdapter;
 
@@ -70,7 +72,7 @@ public class WebServer implements UICallback {
 
     @Override
     public void showMessage(String message) {
-        sendMessage(message);
+        sendCommand(new ServerMessageCommand(message));
     }
 
     @Override
@@ -86,29 +88,30 @@ public class WebServer implements UICallback {
 
     /* private methods */
 
-    private void sendMessage(String message) {
-        clientSessions.stream().forEach(wsa -> sendMessage(wsa, message));
+    private void sendCommand(ServerCommand command) {
+        clientSessions.stream().forEach(wsa -> sendCommand(wsa, command));
     }
 
-    private void sendMessage(String clientId, String message) {
+    private void sendCommand(String clientId, ServerCommand command) {
         // find websocket session
         Optional<WebSocketAdapter> wsaOptional = clientSessions.stream().
                 filter(wsa -> clientId.equals(getClientId(wsa))).
                 findFirst();
 
         if (wsaOptional.isPresent()) {
-            sendMessage(wsaOptional.get(), message);
+            sendCommand(wsaOptional.get(), command);
         } else {
             System.out.println("client not found: " + clientId);
         }
 
     }
 
-    private void sendMessage(WebSocketAdapter wsa, String message) {
-        System.out.println("message to client " + getClientId(wsa) + ": " + message);
+    private void sendCommand(WebSocketAdapter wsa, ServerCommand command) {
+        String json = command.getJson();
+        System.out.println("message to client " + getClientId(wsa) + ": " + json);
         try {
             // send message
-            wsa.getRemote().sendString(message);
+            wsa.getRemote().sendString(json);
         } catch (IOException e) {
             System.out.println("error sending message" + e.getMessage());
         }
