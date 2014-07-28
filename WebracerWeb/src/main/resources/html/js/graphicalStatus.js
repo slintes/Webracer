@@ -28,7 +28,8 @@
     });
 
     Q.scene('graphicalStatus', function (stage) {
-        box = stage.insert(new Q.UI.Container({
+
+        var box = stage.insert(new Q.UI.Container({
             fill: "rgba(0,0,255,0.3)",
             border: 2,
             x: 100,
@@ -39,9 +40,9 @@
         var gearX = 150;
         var commandX = 300;
 
-        steering = box.insert(new Q.SteeringWheel({x: 0, y: 0}));
-        gear = box.insert(new Q.Gear({x: gearX, y: 0}));
-        command = box.insert(new Q.Command({x: commandX, y: 0, frame: 1}));
+        var steering = box.insert(new Q.SteeringWheel({x: 0, y: 0}));
+        var gear = box.insert(new Q.Gear({x: gearX, y: 0}));
+        var command = box.insert(new Q.Command({x: commandX, y: 0, frame: 1}));
 
         box.fit(10);
 

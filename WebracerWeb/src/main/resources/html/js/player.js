@@ -65,8 +65,6 @@
                 return;
             }
 
-            var moved = false;
-
             // keep track of time
             p.stepWait -= dt;
 
