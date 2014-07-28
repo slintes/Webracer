@@ -1,6 +1,6 @@
 // some global constants, DO NOT EDIT
 
-// path to data
+// path to resources
 var PATH = window.location.pathname;
 
 // tile type numbers
@@ -12,14 +12,26 @@ var TILE_STARTPOS = 5;
 var TILE_SECTOR1 = 6;
 var TILE_SECTOR2 = 7;
 
-// steering status values
-var STEERING_STRAIGHT = "straight";
-var STEERING_LEFT = "left";
-var STEERING_RIGHT = "right";
+// steering state
+var STEERING = "steering"; // state name
+var STEERING_STRAIGHT = "straight"; // state value
+var STEERING_LEFT = "left"; // state value
+var STEERING_RIGHT = "right"; // state value
 
-// key status values
-var KEY_UP = "acc";
-var KEY_DOWN = "brake";
-var KEY_LEFT = "left";
-var KEY_RIGHT = "right";
-var KEY_NONE = "none";
+// pressed key state
+var LAST_KEY = "lastKey"; // state name
+var KEY_UP = "acc"; // state value
+var KEY_DOWN = "brake"; // state value
+var KEY_LEFT = "left"; // state value
+var KEY_RIGHT = "right"; // state value
+var KEY_NONE = "none"; // state value
+
+// some more state names with int / boolean values
+var STEERING_ANGLE = "steeringAngle";
+var SPEED = "speed";
+var ONGRASS = "onGrass";
+
+// websocket server commands
+var WS_MESSAGE = "ws-message";
+
+

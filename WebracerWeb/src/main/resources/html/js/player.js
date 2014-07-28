@@ -27,13 +27,13 @@
 
             // handle grass
             if (tileNum == TILE_GRASS) {
-                if (Q.state.get("speed") == SPEED2) {
-                    Q.state.set({speed: SPEED1})
-                    Q.state.set({onGrass: true})
+                if (Q.state.get(SPEED) == SPEED2) {
+                    Q.state.set(SPEED, SPEED1)
+                    Q.state.set(ONGRASS, true)
                 }
             }
             else {
-                Q.state.set({onGrass: false})
+                Q.state.set(ONGRASS, false)
             }
 
             // handle wall
@@ -107,11 +107,11 @@
             }
 
             // get last pressed key and reset
-            var lastKey = Q.state.get("lastKey");
-            Q.state.set({lastKey: KEY_NONE});
+            var lastKey = Q.state.get(LAST_KEY);
+            Q.state.set(LAST_KEY, KEY_NONE);
 
             // set new steering
-            var steering = Q.state.get("steering");
+            var steering = Q.state.get(STEERING);
             if (lastKey == KEY_LEFT) {
                 if (steering == STEERING_RIGHT) {
                     steering = STEERING_STRAIGHT;
@@ -125,7 +125,7 @@
                     steering = STEERING_RIGHT;
                 }
             }
-            Q.state.set({steering: steering})
+            Q.state.set(STEERING, steering)
 
             // rotate car according to steering
             if (steering == STEERING_LEFT) {
@@ -133,16 +133,16 @@
             } else if (steering == STEERING_RIGHT) {
                 p.angle += DEGREES;
             }
-            Q.state.set({steeringAngle: p.angle})
+            Q.state.set(STEERING_ANGLE, p.angle)
 
             // set new speed
-            var speed = Q.state.get("speed");
+            var speed = Q.state.get(SPEED);
             if (lastKey == KEY_UP) {
                 if (speed == 0) {
                     speed = SPEED1;
                 } else if (speed == SPEED1) {
                     // prevent speeds2 on grass
-                    if (!Q.state.get("onGrass")) {
+                    if (!Q.state.get(ONGRASS)) {
                         speed = SPEED2;
                     }
                 }
@@ -153,7 +153,7 @@
                     speed = 0;
                 }
             }
-            Q.state.set({speed: speed})
+            Q.state.set(SPEED, speed)
             p.stepDistance = speed;
 
             // calculate x and y of movement
@@ -192,16 +192,16 @@
 
             // save the latest key press
             upPressed = function () {
-                Q.state.set({lastKey: KEY_UP});
+                Q.state.set(LAST_KEY, KEY_UP);
             };
             downPressed = function () {
-                Q.state.set({lastKey: KEY_DOWN});
+                Q.state.set(LAST_KEY, KEY_DOWN);
             };
             leftPressed = function () {
-                Q.state.set({lastKey: KEY_LEFT});
+                Q.state.set(LAST_KEY, KEY_LEFT);
             };
             rightPressed = function () {
-                Q.state.set({lastKey: KEY_RIGHT});
+                Q.state.set(LAST_KEY, KEY_RIGHT);
             }
 
             Q.input.on("up", this, upPressed);

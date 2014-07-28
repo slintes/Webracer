@@ -31,10 +31,10 @@ window.addEventListener('load', function () {
             Q.gravityY = 0;
 
             // initial state
-            Q.state.set({steering: STEERING_STRAIGHT});
-            Q.state.set({steeringAngle: 90})
-            Q.state.set({speed: 0});
-            Q.state.set({onGrass: false});
+            Q.state.set(STEERING, STEERING_STRAIGHT);
+            Q.state.set(STEERING_ANGLE, 90)
+            Q.state.set(SPEED, 0);
+            Q.state.set(ONGRASS, false);
 
             // the graphics of the track
             Q.sheet("tiles", PATH + "images/track.png", { tilew: TILESIZE, tileh: TILESIZE});

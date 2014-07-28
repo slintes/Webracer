@@ -10,14 +10,14 @@
         box.fit(5);
 
         updateStatus = function() {
-            infotext.p.label = "speed: " + Q.state.get("speed") +
-                "\nsteering: " + Q.state.get("steering") +
-                "\nnextCommand: " + Q.state.get("lastKey");
+            infotext.p.label = "speed: " + Q.state.get(SPEED) +
+                "\nsteering: " + Q.state.get(STEERING) +
+                "\nnextCommand: " + Q.state.get(LAST_KEY);
         }
 
-        Q.state.on("change.speed", updateStatus);
-        Q.state.on("change.steering", updateStatus);
-        Q.state.on("change.lastKey", updateStatus);
+        Q.state.on("change." + SPEED, updateStatus);
+        Q.state.on("change." + STEERING, updateStatus);
+        Q.state.on("change." + LAST_KEY, updateStatus);
 
     });
 

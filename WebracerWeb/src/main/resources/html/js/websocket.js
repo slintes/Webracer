@@ -41,7 +41,7 @@
         console.log("TEST MESSAGE FROM STATE: " + data.message);
     }
 
-    Q.state.on("change.ws-message", testMessage);
+    Q.state.on("change." + WS_MESSAGE, testMessage);
 
 
 };

@@ -46,7 +46,7 @@
         box.fit(10);
 
         updateSteering = function () {
-            var st = Q.state.get("steering");
+            var st = Q.state.get(STEERING);
             if(st == STEERING_STRAIGHT){
                 steering.p.angle = 0;
             }
@@ -59,7 +59,7 @@
         }
 
         updateSpeed = function () {
-            var speed = Q.state.get("speed");
+            var speed = Q.state.get(SPEED);
             if(speed == 0){
                 gear.p.frame = 0;
             }
@@ -72,7 +72,7 @@
         }
 
         updateCommand = function () {
-            var lastKey = Q.state.get("lastKey");
+            var lastKey = Q.state.get(LAST_KEY);
             if(lastKey == KEY_NONE){
                 command.p.frame = 1;
             }
@@ -94,9 +94,9 @@
             }
         }
 
-        Q.state.on("change.steering", updateSteering);
-        Q.state.on("change.speed", updateSpeed);
-        Q.state.on("change.lastKey", updateCommand);
+        Q.state.on("change." + STEERING, updateSteering);
+        Q.state.on("change." + SPEED, updateSpeed);
+        Q.state.on("change." + LAST_KEY, updateCommand);
 
     });
 
