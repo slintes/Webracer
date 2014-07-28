@@ -3,7 +3,8 @@ window.addEventListener('load', function () {
     // init Quintus
     var Q = window.Q = Quintus()
         .include("Sprites, Scenes, Input, 2D, UI") // Quintus
-        .include("WebracerPlayer, WebracerTrack, WebracerTextStatus, WebracerGraphicalStatus, Websocket") // own
+        .include("WebracerPlayer, WebracerTrack, Websocket") // own
+        .include("WebracerTextStatus, WebracerGraphicalStatus, WebracerMessageBox") // more own
         .setup({width: 800, height: 700})
         .controls(true);
 
@@ -45,14 +46,19 @@ window.addEventListener('load', function () {
             // steering wheel and gears
             Q.compileSheets(PATH + "images/steeringWheelAndGears.png", PATH + "data/steeringWheelAndGears.json");
 
+            var sceneNr = 0;
+
             // init stage with the track
-            Q.stageScene("track", 0);
+            Q.stageScene("track", sceneNr++);
 
             // init stage with steering and gear status
-            Q.stageScene("graphicalStatus", 1);
+            Q.stageScene("graphicalStatus", sceneNr++);
+
+            // init stage with steering and gear status
+            Q.stageScene("messageBox", sceneNr++);
 
             // init stage with infos
-//            Q.stageScene("textStatus", 2);
+//            Q.stageScene("textStatus", sceneNr++);
 
             // start timeout
             window.setTimeout(nextRound, TIMEOUT);

@@ -32,6 +32,7 @@ var SPEED = "speed";
 var ONGRASS = "onGrass";
 
 // websocket server commands
-var WS_MESSAGE = "ws-message";
+var WS_MESSAGE = "ws-message"; // command name
+var WS_MESSAGE_MESSAGE = "message"; // value name
 
 
