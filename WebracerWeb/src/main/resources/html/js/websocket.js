@@ -38,9 +38,24 @@
     }
 
     // add send message to Q so that it's easy available everywhere
-    Q.sendMessage = function(message) {
+    var sendMessage = function(message) {
         console.log("sending message: " + message);
         connection.send(message);
+    }
+
+    // send message with command and data
+    Q.sendCommand = function (command, data) {
+        var jsonCommand = {};
+        jsonCommand.command = command;
+
+        if(data){
+            jsonCommand.data = data;
+        } else {
+            jsonCommand.data = {};
+        }
+
+        var commandString = JSON.stringify(jsonCommand);
+        sendMessage(commandString);
     }
 
     // generate some id
@@ -56,16 +71,14 @@
 
     // register client when websocket connection is up and running AND Quintus ist ready
     var registerClient = function () {
-        var command = {};
-        command.command = WSC_REGISTER_CLIENT;
-        command.data = {};
 
         var clientId = generateUUID();
-        command.data[WSC_REGISTER_CLIENT_ID] = clientId;
         Q.state.set(CLIENTID, clientId);
 
-        var commandString = JSON.stringify(command);
-        Q.sendMessage(commandString);
+        var data = {};
+        data[WSC_REGISTER_CLIENT_ID] = clientId;
+        Q.sendCommand(WSC_REGISTER_CLIENT, data);
+
     }
 
     var initReady = function(){
@@ -87,12 +100,9 @@
             return false;
         }
         else {
-            var command = {};
-            command.command = WSC_REGISTER_CAR;
-            command.data = {};
-            command.data[WSC_REGISTER_CAR_NAME] = name;
-            var commandString = JSON.stringify(command);
-            Q.sendMessage(commandString);
+            var data = {};
+            data[WSC_REGISTER_CAR_NAME] = name;
+            Q.sendCommand(WSC_REGISTER_CAR, data);
             return false;
         }
     }
