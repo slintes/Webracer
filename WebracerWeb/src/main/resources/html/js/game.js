@@ -3,7 +3,7 @@ window.addEventListener('load', function () {
     // init Quintus
     var Q = window.Q = Quintus()
         .include("Sprites, Scenes, Input, 2D, UI") // Quintus
-        .include("WebracerPlayer, WebracerTrack, Websocket") // own
+        .include("WebracerPlayer, WebracerOtherCars, WebracerTrack, Websocket") // own
         .include("WebracerTextStatus, WebracerGraphicalStatus, WebracerMessageBox") // more own
         .setup({width: 800, height: 700})
         .controls(true);

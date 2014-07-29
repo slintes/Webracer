@@ -1,19 +1,11 @@
 {
-"car1": {
+"car": {
     "sx": 0,
     "sy": 0,
-    "cols": 1,
+    "w": 18,
+    "h": 17,
     "tilew": 9,
     "tileh": 17,
-    "frames": 1
-},
-"car2": {
-    "sx": 9,
-    "sy": 0,
-    "cols": 1,
-    "tilew": 9,
-    "tileh": 17,
-    "frames": 1
+    "frames": 2
 }
-
 }

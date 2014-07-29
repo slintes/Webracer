@@ -16,6 +16,7 @@ public class ServerAddCarCommand extends AbstractServerCommand {
         super("addCar");
 
         Map<String, Object> map = getEmptyMap();
+        map.put("startPosition", car.getStartPosition());
         map.put("startPositionX", getStartXPosition(track, car.getStartPosition()));
         map.put("startPositionY", getStartYPosition(track, car.getStartPosition()));
         map.put("name", car.getName());

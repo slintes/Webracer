@@ -176,7 +176,8 @@
     Q.Sprite.extend("Player", {
         init: function (p) {
             this._super(p, {
-                sheet: "car1",
+                sheet: "car",
+                frame: 0, // override with startpos - 1 when added
                 scale: 1.2, // make car a bit bigger
                 angle: 90, // starting position: heading right
                 broken: false, // track if car is broken = hit the wall

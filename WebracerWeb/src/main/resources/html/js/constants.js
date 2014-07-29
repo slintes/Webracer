@@ -42,6 +42,7 @@ var WSS_MESSAGE_MESSAGE = "message"; // value name
 var WSS_ADDCAR = "ws-addCar"; // command name
 var WSS_ADDCAR_CLIENTID = "clientId"; // value name
 var WSS_ADDCAR_NAME = "name"; // value name
+var WSS_ADDCAR_STARTPOS = "startPosition"; // value name
 var WSS_ADDCAR_XPOS = "startPositionX"; // value name
 var WSS_ADDCAR_YPOS = "startPositionY"; // value name
 
