@@ -40,11 +40,18 @@ public interface Car {
      */
     public boolean isFinished();
 
-
     /**
      * driver's name
      *
      * @return the name
      */
     public String getName();
+
+    /**
+     * client id of the owner the car
+     *
+     * @return the client id
+     */
+    public String getClientId();
+
 }

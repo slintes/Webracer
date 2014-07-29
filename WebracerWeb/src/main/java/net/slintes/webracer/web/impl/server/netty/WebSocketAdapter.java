@@ -16,20 +16,19 @@ public class WebSocketAdapter extends org.eclipse.jetty.websocket.api.WebSocketA
 
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
+
         System.out.println("websocket close");
 
         getSession().close();
         webServer.unRegisterClient(this);
 
-        super.onWebSocketClose(statusCode, reason);
     }
 
     @Override
     public void onWebSocketConnect(Session session) {
-        super.onWebSocketConnect(session);
 
         System.out.println("websocket connect");
-        webServer.registerClient(this);
+        super.onWebSocketConnect(session);
 
     }
 
@@ -39,7 +38,6 @@ public class WebSocketAdapter extends org.eclipse.jetty.websocket.api.WebSocketA
         System.out.println("websocket error: " + cause.getMessage());
         webServer.unRegisterClient(this);
 
-        super.onWebSocketError(cause);
     }
 
     @Override
@@ -48,10 +46,9 @@ public class WebSocketAdapter extends org.eclipse.jetty.websocket.api.WebSocketA
             return;
         }
 
-        webServer.onMessage(message);
-
         System.out.println("websocket message: " + message);
-        super.onWebSocketText(message);
+        webServer.onMessage(this, message);
+
     }
 
 }

@@ -44,11 +44,16 @@ public class Client implements Car {
         return isFinished;
     }
 
-
     @Override
     public String getName() {
         return name;
     }
+
+    @Override
+    public String getClientId() {
+        return clientId;
+    }
+
 
     public void setStartPosition(int startPosition) {
         this.startPosition = startPosition;
@@ -74,7 +79,4 @@ public class Client implements Car {
         this.name = name;
     }
 
-    public String getClientId() {
-        return clientId;
-    }
 }

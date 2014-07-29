@@ -3,6 +3,9 @@
 // path to resources
 var PATH = window.location.pathname;
 
+// pixel size of a track tile
+var TILESIZE = 9;
+
 // tile type numbers
 var TILE_ASPHALT = 1;
 var TILE_GRASS = 2;
@@ -30,9 +33,22 @@ var KEY_NONE = "none"; // state value
 var STEERING_ANGLE = "steeringAngle";
 var SPEED = "speed";
 var ONGRASS = "onGrass";
+var CLIENTID = "clientId";
 
 // websocket server commands
-var WS_MESSAGE = "ws-message"; // command name
-var WS_MESSAGE_MESSAGE = "message"; // value name
+var WSS_MESSAGE = "ws-message"; // command name
+var WSS_MESSAGE_MESSAGE = "message"; // value name
 
+var WSS_ADDCAR = "ws-addCar"; // command name
+var WSS_ADDCAR_CLIENTID = "clientId"; // value name
+var WSS_ADDCAR_NAME = "name"; // value name
+var WSS_ADDCAR_XPOS = "startPositionX"; // value name
+var WSS_ADDCAR_YPOS = "startPositionY"; // value name
+
+// websocket client commands
+var WSC_REGISTER_CLIENT = "registerClient"; // command name
+var WSC_REGISTER_CLIENT_ID = "clientId"; // value name
+
+var WSC_REGISTER_CAR = "registerCar"; // command name
+var WSC_REGISTER_CAR_NAME = "name"; // value name
 

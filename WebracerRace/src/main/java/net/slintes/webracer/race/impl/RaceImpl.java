@@ -57,13 +57,14 @@ public class RaceImpl implements Race {
             return 0;
         }
 
-        raceControl.addCar(name);
-
         Client client = getClient(clientId);
         int startPosition = getNrOfCars() + 1;
         client.setStartPosition(startPosition);
         client.setName(name);
+
         uiCallback.addCar(client);
+        raceControl.addCar(client);
+
         return startPosition;
     }
 

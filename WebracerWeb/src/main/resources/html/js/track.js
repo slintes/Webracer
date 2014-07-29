@@ -18,15 +18,35 @@
                 tileH: 9
             }));
 
-        // add our car
-        stage.player = stage.insert(new Q.Player(Q.tilePos(50, 35)));
-
-        stage.add("viewport").follow(stage.player);
-
         // new function for round based gameplay, forward to player
         stage.nextRound = function () {
-            this.player.RaceControl.nextRound();
+            if(this.player){
+                this.player.RaceControl.nextRound();
+            }
         }
+
+        // helper method for converting pixel / tile position
+        var tilePos = function (col, row) {
+            return { x: (col * TILESIZE)-5, y: (row * TILESIZE)+5 };
+        }
+
+        var addCar = function(data){
+            var clientId = data[WSS_ADDCAR_CLIENTID];
+            var xPos = data[WSS_ADDCAR_XPOS];
+            var yPos = data[WSS_ADDCAR_YPOS];
+
+            if(Q.state.get(CLIENTID) == clientId){
+                // our car
+                stage.player = stage.insert(new Q.Player(tilePos(xPos, yPos)));
+                stage.add("viewport").follow(stage.player);
+            }
+            else {
+                // TODO other car
+            }
+
+        }
+
+        Q.state.on("change." + WSS_ADDCAR, addCar);
 
     });
 

@@ -8,11 +8,6 @@ window.addEventListener('load', function () {
         .setup({width: 800, height: 700})
         .controls(true);
 
-    // helper method for converting pixel / tile position
-    var TILESIZE = 9;
-    Q.tilePos = function (col, row) {
-        return { x: col * TILESIZE, y: row * TILESIZE };
-    }
 
     // disable default collision handling of 2d component,
     // we handle it in our RaceControl component

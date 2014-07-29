@@ -1,5 +1,6 @@
 package net.slintes.webracer.race.impl;
 
+import net.slintes.webracer.race.Car;
 import net.slintes.webracer.race.UICallback;
 
 import java.util.concurrent.Executors;
@@ -28,6 +29,10 @@ public class RaceControl {
     long wonTime = 0;
     long readyTime = 0;
 
+    private String lastMessage = null;
+    private int skipCount = 0;
+
+
     public RaceControl(UICallback uiCallBack) {
         this.uiCallBack = uiCallBack;
 
@@ -54,15 +59,15 @@ public class RaceControl {
         }
     }
 
-    public void addCar(String name){
+    public void addCar(Car car){
         nrCars++;
         secondsToStart = SECONDS_TO_START;
-        uiCallBack.showMessage(name + " joined the race");
+        showMessage(car.getName() + " joined the race on start position " + car.getStartPosition());
     }
 
     public void removeCar(String name) {
         nrCars--;
-        uiCallBack.showMessage(name + " left the race");
+        showMessage(name + " left the race");
     }
 
     public void raceWon(){
@@ -86,13 +91,13 @@ public class RaceControl {
 
     private void handleWaitingState(){
         if(nrCars < MINIMUM_NR_CARS){
-            uiCallBack.showMessage("Waiting for players...");
+            showMessage("Waiting for players...");
             secondsToStart = SECONDS_TO_START;
         } else {
             if (secondsToStart == 0) {
                 start();
             } else {
-                uiCallBack.showMessage("Race will start in " + secondsToStart + " seconds");
+                showMessage("Race will start in " + secondsToStart + " seconds");
                 secondsToStart--;
             }
         }
@@ -103,7 +108,7 @@ public class RaceControl {
         long time = System.currentTimeMillis() - startTime;
         if (time >= MINUTES_TO_CANCEL_RACE * 60 * 1000) {
             // show message and reset all clients
-            uiCallBack.showMessage("Race timed out");
+            showMessage("Race timed out");
             try {
                 TimeUnit.SECONDS.sleep(3);
             } catch (InterruptedException e) {
@@ -117,7 +122,7 @@ public class RaceControl {
         long time = System.currentTimeMillis() - wonTime;
         if (time >= MINUTES_TO_CANCEL_RACE_AFTER_WINNER * 60 * 1000) {
             // show message and reset all clients
-            uiCallBack.showMessage("Race timed out");
+            showMessage("Race timed out");
             try {
                 TimeUnit.SECONDS.sleep(3);
             } catch (InterruptedException e) {
@@ -146,6 +151,16 @@ public class RaceControl {
         nrCars = 0;
         state = RaceState.WAITING;
         uiCallBack.reset();
+    }
+
+    // always use this in order to avoid the same message (Waiting for players...) repeated too fast
+    private void showMessage(String message){
+        if(message.equals(lastMessage) && skipCount++ < 5){
+            return;
+        }
+        skipCount = 0;
+        lastMessage = message;
+        uiCallBack.showMessage(message);
     }
 
 }

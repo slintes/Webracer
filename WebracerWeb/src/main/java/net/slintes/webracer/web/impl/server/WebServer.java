@@ -3,15 +3,21 @@ package net.slintes.webracer.web.impl.server;
 import net.slintes.webracer.race.Car;
 import net.slintes.webracer.race.Race;
 import net.slintes.webracer.race.UICallback;
+import net.slintes.webracer.web.impl.server.commands.client.ClientCommand;
+import net.slintes.webracer.web.impl.server.commands.client.ClientCommandFactory;
+import net.slintes.webracer.web.impl.server.commands.client.ClientCommandType;
+import net.slintes.webracer.web.impl.server.commands.client.impl.ClientRegisterCarCommand;
+import net.slintes.webracer.web.impl.server.commands.client.impl.ClientRegisterClientCommand;
 import net.slintes.webracer.web.impl.server.commands.server.ServerCommand;
+import net.slintes.webracer.web.impl.server.commands.server.impl.ServerAddCarCommand;
 import net.slintes.webracer.web.impl.server.commands.server.impl.ServerMessageCommand;
 import net.slintes.webracer.web.impl.server.netty.WebServerStarter;
 import net.slintes.webracer.web.impl.server.netty.WebSocketAdapter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -20,12 +26,14 @@ import java.util.Optional;
 public class WebServer implements UICallback {
 
     private final Race race;
+    private final ClientCommandFactory clientCommandFactory;
 
     // TODO is this synchronizing enough?
-    private List<WebSocketAdapter> clientSessions = Collections.synchronizedList(new ArrayList<>());
+    private Map<String, WebSocketAdapter> clientSessions = Collections.synchronizedMap(new HashMap<>());
 
     public WebServer(Race race) {
         this.race = race;
+        this.clientCommandFactory = new ClientCommandFactory();
     }
 
     public void startServer() {
@@ -36,24 +44,47 @@ public class WebServer implements UICallback {
 
     /* methods called from WebsocketAdapter */
 
-    public void registerClient(WebSocketAdapter wsa) {
-        clientSessions.add(wsa);
-        race.registerClient(getClientId(wsa));
+    public void onMessage(WebSocketAdapter wsa, String message) {
+        ClientCommand clientCommand = clientCommandFactory.getClientCommand(message);
+        if(clientCommand == null){
+            return;
+        }
 
-        // test only!
-        race.registerCar(getClientId(wsa), "testname");
+        String clientId = getClientId(wsa);
+        if (clientId == null) {
+            // may only be null is command is registerClient
+            if(!clientCommand.getType().equals(ClientCommandType.RegisterClient)){
+                return;
+            }
+        }
+
+        switch (clientCommand.getType()){
+            case RegisterClient:
+                ClientRegisterClientCommand registerClientCommand = (ClientRegisterClientCommand) clientCommand;
+                String newClientId = registerClientCommand.getClientId();
+                clientSessions.put(newClientId, wsa);
+                race.registerClient(newClientId);
+                break;
+            case RegisterCar:
+                ClientRegisterCarCommand registerCarCommand = (ClientRegisterCarCommand) clientCommand;
+                String name = registerCarCommand.getName();
+                race.registerCar(clientId, name);
+                break;
+        }
+
+        return;
     }
 
     public void unRegisterClient(WebSocketAdapter wsa) {
-        clientSessions.remove(wsa);
-        race.unRegisterClient(getClientId(wsa));
+        String clientId = getClientId(wsa);
+        if(clientId != null){
+            clientSessions.remove(clientId);
+            race.unRegisterClient(clientId);
+        }
     }
 
-    public void onMessage(String message) {
-        // TODO
-    }
 
-    /* UICallback Methods */
+    /* UICallback Methods (= commands from race) */
 
     @Override
     public void start() {
@@ -62,7 +93,7 @@ public class WebServer implements UICallback {
 
     @Override
     public void addCar(Car car) {
-
+        sendCommand(new ServerAddCarCommand(race.getTrack(), car));
     }
 
     @Override
@@ -89,26 +120,24 @@ public class WebServer implements UICallback {
     /* private methods */
 
     private void sendCommand(ServerCommand command) {
-        clientSessions.stream().forEach(wsa -> sendCommand(wsa, command));
+        clientSessions.forEach((clientId, wsa) -> sendCommand(clientId, wsa, command));
     }
 
     private void sendCommand(String clientId, ServerCommand command) {
         // find websocket session
-        Optional<WebSocketAdapter> wsaOptional = clientSessions.stream().
-                filter(wsa -> clientId.equals(getClientId(wsa))).
-                findFirst();
-
-        if (wsaOptional.isPresent()) {
-            sendCommand(wsaOptional.get(), command);
+        WebSocketAdapter wsa = clientSessions.get(clientId);
+        if(wsa != null){
+            sendCommand(clientId, wsa, command);
         } else {
             System.out.println("client not found: " + clientId);
+            race.unRegisterClient(clientId);
         }
 
     }
 
-    private void sendCommand(WebSocketAdapter wsa, ServerCommand command) {
+    private void sendCommand(String clientId, WebSocketAdapter wsa, ServerCommand command) {
         String json = command.getJson();
-        System.out.println("message to client " + getClientId(wsa) + ": " + json);
+        System.out.println("message to client " + clientId + ": " + json);
         try {
             // send message
             wsa.getRemote().sendString(json);
@@ -117,8 +146,12 @@ public class WebServer implements UICallback {
         }
     }
 
-    private String getClientId(WebSocketAdapter wsa) {
-        return "" + wsa.toString();
+    private String getClientId(WebSocketAdapter wsa){
+        // get client id for this websocket adapter
+        Optional<Map.Entry<String, WebSocketAdapter>> entryOptional = clientSessions.entrySet().stream().filter(e -> e.getValue().equals(wsa)).findFirst();
+        if(entryOptional.isPresent()){
+            return entryOptional.get().getKey();
+        }
+        return null;
     }
-
 }

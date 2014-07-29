@@ -27,11 +27,14 @@
         box.fit(10);
 
         updateMessageBox = function (data) {
-            var message = data[WS_MESSAGE_MESSAGE];
+            var message = data[WSS_MESSAGE_MESSAGE];
             var date = new Date();
             var hours = date.getHours();
+            hours = hours < 10 ? "0" + hours : hours;
             var minutes = date.getMinutes();
+            minutes = minutes < 10 ? "0" + minutes : minutes;
             var seconds = date.getSeconds();
+            seconds = seconds < 10 ? "0" + seconds : seconds;
             var time = hours + ":" + minutes + ":" + seconds;
 
             // remove first 2 lines, re-add header line
@@ -43,7 +46,7 @@
             infotext.p.label = messages.join("\n");
         }
 
-        Q.state.on("change." + WS_MESSAGE, updateMessageBox);
+        Q.state.on("change." + WSS_MESSAGE, updateMessageBox);
     });
 
 };
