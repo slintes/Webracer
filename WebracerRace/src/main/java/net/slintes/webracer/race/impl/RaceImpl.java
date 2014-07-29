@@ -38,6 +38,10 @@ public class RaceImpl implements Race {
 
     @Override
     synchronized public boolean registerClient(String clientId) {
+
+        // send existing cars to new new client
+        clients.stream().forEach(c -> uiCallback.addCar(clientId, c));
+
         clients.add(new Client(clientId));
         return raceControl.getState().equals(RaceState.WAITING) && !maxNrCarsReached();
     }

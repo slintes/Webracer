@@ -34,6 +34,8 @@ var STEERING_ANGLE = "steeringAngle";
 var SPEED = "speed";
 var ONGRASS = "onGrass";
 var CLIENTID = "clientId"; // own client id
+var WEBSOCKET_INIT_READY = "wsReady";
+var QUINTUS_INIT_READY = "qReady";
 
 // websocket server commands
 var WSS_MESSAGE = "ws-message"; // command name

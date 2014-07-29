@@ -102,6 +102,11 @@ public class WebServer implements UICallback {
     }
 
     @Override
+    public void addCar(String clientId, Car car) {
+        sendCommand(clientId, new ServerAddCarCommand(race.getTrack(), car));
+    }
+
+    @Override
     public void updateCar(Car car) {
 
     }

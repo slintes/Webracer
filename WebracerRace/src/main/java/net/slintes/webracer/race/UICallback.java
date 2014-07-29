@@ -18,6 +18,14 @@ public interface UICallback {
     public void addCar(Car car);
 
     /**
+     * add a car to the track of a specific client
+     *
+     * @param clientId the id of the client where the car should be added
+     * @param car the car
+     */
+    public void addCar(String clientId, Car car);
+
+    /**
      * update car
      *
      * @param car the car which is updated

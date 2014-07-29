@@ -67,6 +67,7 @@ window.addEventListener('load', function () {
             // add listener on start command for starting the race
             Q.state.on("change." + WSS_START, nextRound);
 
+            Q.state.set(QUINTUS_INIT_READY, true);
         }
     );
 

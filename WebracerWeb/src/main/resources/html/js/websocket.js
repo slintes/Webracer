@@ -12,7 +12,7 @@
 
         connection.onopen = function(){
             console.log("webSocket open");
-            registerClient();
+            Q.state.set(WEBSOCKET_INIT_READY, true);
         }
 
         connection.onerror = function (error) {
@@ -54,22 +54,35 @@
         return uuid;
     };
 
-    // register client when websocket connection is up and running
+    // register client when websocket connection is up and running AND Quintus ist ready
     var registerClient = function () {
         var command = {};
         command.command = WSC_REGISTER_CLIENT;
         command.data = {};
+
         var clientId = generateUUID();
-        Q.state.set(CLIENTID, clientId);
         command.data[WSC_REGISTER_CLIENT_ID] = clientId;
+        Q.state.set(CLIENTID, clientId);
+
         var commandString = JSON.stringify(command);
         Q.sendMessage(commandString);
     }
 
+    var initReady = function(){
+        var websocketReady = Q.state.get(WEBSOCKET_INIT_READY);
+        var quintusReady = Q.state.get(QUINTUS_INIT_READY);
+        if(websocketReady && quintusReady){
+            registerClient();
+        }
+    }
+
+    Q.state.on("change." + WEBSOCKET_INIT_READY, initReady);
+    Q.state.on("change." + QUINTUS_INIT_READY, initReady);
+
     // called from html form
-    joinRace = function(form){
+    joinRace = function (form) {
         var name = form.name.value;
-        if(name.trim().length == 0){
+        if (name.trim().length == 0) {
             alert("Please enter your name");
             return false;
         }
