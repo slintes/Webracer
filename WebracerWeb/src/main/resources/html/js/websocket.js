@@ -25,14 +25,17 @@
 
             var jsonMessage = JSON.parse(message.data);
             var command = 'ws-' + jsonMessage.command;
-            var data = jsonMessage.data;
+
+            var data = {};
+            if(jsonMessage.data){
+                data = jsonMessage.data;
+            }
 
             // set command to Quintus state, so we can add state change listeners
             // where we need to react on commands
             Q.state.set(command, data);
         };
     }
-
 
     // add send message to Q so that it's easy available everywhere
     Q.sendMessage = function(message) {
@@ -51,6 +54,7 @@
         return uuid;
     };
 
+    // register client when websocket connection is up and running
     var registerClient = function () {
         var command = {};
         command.command = WSC_REGISTER_CLIENT;
@@ -61,8 +65,6 @@
         var commandString = JSON.stringify(command);
         Q.sendMessage(commandString);
     }
-
-    connect();
 
     // called from html form
     joinRace = function(form){
@@ -82,5 +84,6 @@
         }
     }
 
+    connect();
 
 };

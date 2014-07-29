@@ -33,7 +33,7 @@ var KEY_NONE = "none"; // state value
 var STEERING_ANGLE = "steeringAngle";
 var SPEED = "speed";
 var ONGRASS = "onGrass";
-var CLIENTID = "clientId";
+var CLIENTID = "clientId"; // own client id
 
 // websocket server commands
 var WSS_MESSAGE = "ws-message"; // command name
@@ -45,6 +45,8 @@ var WSS_ADDCAR_NAME = "name"; // value name
 var WSS_ADDCAR_STARTPOS = "startPosition"; // value name
 var WSS_ADDCAR_XPOS = "startPositionX"; // value name
 var WSS_ADDCAR_YPOS = "startPositionY"; // value name
+
+var WSS_START = "ws-start"; // command name
 
 // websocket client commands
 var WSC_REGISTER_CLIENT = "registerClient"; // command name

@@ -11,6 +11,7 @@ import net.slintes.webracer.web.impl.server.commands.client.impl.ClientRegisterC
 import net.slintes.webracer.web.impl.server.commands.server.ServerCommand;
 import net.slintes.webracer.web.impl.server.commands.server.impl.ServerAddCarCommand;
 import net.slintes.webracer.web.impl.server.commands.server.impl.ServerMessageCommand;
+import net.slintes.webracer.web.impl.server.commands.server.impl.ServerStartCommand;
 import net.slintes.webracer.web.impl.server.netty.WebServerStarter;
 import net.slintes.webracer.web.impl.server.netty.WebSocketAdapter;
 
@@ -92,7 +93,7 @@ public class WebServer implements UICallback {
 
     @Override
     public void start() {
-
+        sendCommand(new ServerStartCommand());
     }
 
     @Override

@@ -95,6 +95,7 @@ public class RaceControl {
             secondsToStart = SECONDS_TO_START;
         } else {
             if (secondsToStart == 0) {
+                showMessage("GO!");
                 start();
             } else {
                 showMessage("Race will start in " + secondsToStart + " seconds");

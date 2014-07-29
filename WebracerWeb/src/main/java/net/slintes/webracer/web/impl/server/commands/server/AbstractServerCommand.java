@@ -27,10 +27,11 @@ public class AbstractServerCommand implements ServerCommand {
         JSONObject jsonCommand = new JSONObject();
         jsonCommand.put("command", command);
 
-        JSONObject jsonData = new JSONObject();
-        data.forEach(jsonData::put);
-
-        jsonCommand.put("data", jsonData);
+        if(data != null){
+            JSONObject jsonData = new JSONObject();
+            data.forEach(jsonData::put);
+            jsonCommand.put("data", jsonData);
+        }
 
         return jsonCommand.toJSONString();
     }

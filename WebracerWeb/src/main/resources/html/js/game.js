@@ -56,14 +56,18 @@ window.addEventListener('load', function () {
 //            Q.stageScene("textStatus", sceneNr++);
 
             // start timeout
-            window.setTimeout(nextRound, TIMEOUT);
+//            window.setTimeout(nextRound, TIMEOUT);
+
+            // handle round based gameplay
+            var nextRound = function () {
+                Q.stage(0).nextRound();
+                window.setTimeout(nextRound, TIMEOUT);
+            }
+
+            // add listener on start command for starting the race
+            Q.state.on("change." + WSS_START, nextRound);
+
         }
     );
-
-    // handle round based gameplay
-    this.nextRound = function () {
-        Q.stage(0).nextRound();
-        window.setTimeout(nextRound, TIMEOUT);
-    }
 
 }, true);
