@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 public class RaceControl {
 
     private static final int SECONDS_TO_START = 10;
-    private static final int MINUTES_TO_CANCEL_RACE = 1;
-    private static final int MINUTES_TO_CANCEL_RACE_AFTER_WINNER = 1;
-    private static final int SECONDS_TO_SHOW_RESULTS = 10;
+    private static final int MINUTES_TO_CANCEL_RACE = 15;
+    private static final int MINUTES_TO_CANCEL_RACE_AFTER_WINNER = 5;
+    private static final int SECONDS_TO_SHOW_RESULTS = 30;
     private static final int MINIMUM_NR_CARS = 2;
 
     private final UICallback uiCallBack;

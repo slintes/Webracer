@@ -50,6 +50,13 @@ var WSS_ADDCAR_YPOS = "startPositionY"; // value name
 
 var WSS_START = "ws-start"; // command name
 
+var WSS_UPDATE_CAR = "ws-updateCar";
+var WSS_UPDATE_CAR_XPOS = "xPos";
+var WSS_UPDATE_CAR_YPOS = "yPos";
+var WSS_UPDATE_CAR_SPEED = "speed";
+var WSS_UPDATE_CAR_ANGLE = "angle";
+var WSS_UPDATE_CAR_ID = "clientId";
+
 // websocket client commands
 var WSC_REGISTER_CLIENT = "registerClient"; // command name
 var WSC_REGISTER_CLIENT_ID = "clientId"; // value name
@@ -57,3 +64,8 @@ var WSC_REGISTER_CLIENT_ID = "clientId"; // value name
 var WSC_REGISTER_CAR = "registerCar"; // command name
 var WSC_REGISTER_CAR_NAME = "name"; // value name
 
+var WSC_UPDATE_POS = "updatePosition"; // command name
+var WSC_UPDATE_POS_X = "posX";
+var WSC_UPDATE_POS_Y = "posY";
+var WSC_UPDATE_POS_SPEED = "speed";
+var WSC_UPDATE_POS_ANGLE = "angle";

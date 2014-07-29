@@ -73,14 +73,14 @@ public class RaceImpl implements Race {
     }
 
     @Override
-    synchronized public void nextPosition(String clientId, int xPos, int yPos) {
-        Client client = updatePosition(clientId, xPos, yPos);
+    synchronized public void nextPosition(String clientId, int xPos, int yPos, int speed, int angle) {
+        Client client = updatePosition(clientId, xPos, yPos, speed, angle);
         uiCallback.updateCar(client);
     }
 
     @Override
-    synchronized public void crash(String clientId, int xPos, int yPos) {
-        Client client = updatePosition(clientId, xPos, yPos);
+    synchronized public void crash(String clientId, int xPos, int yPos, int angle) {
+        Client client = updatePosition(clientId, xPos, yPos, 0, angle);
         client.setCrashed(true);
         uiCallback.updateCar(client);
         checkForDrivingCars();
@@ -88,8 +88,8 @@ public class RaceImpl implements Race {
 
 
     @Override
-    synchronized public void finish(String clientId, int xPos, int yPos) {
-        Client client = updatePosition(clientId, xPos, yPos);
+    synchronized public void finish(String clientId, int xPos, int yPos, int angle) {
+        Client client = updatePosition(clientId, xPos, yPos, 0, angle);
         client.setFinished(true);
         uiCallback.updateCar(client);
 
@@ -111,10 +111,12 @@ public class RaceImpl implements Race {
         return (int)clients.stream().filter(c -> c.getName() != null).count();
     }
 
-    private Client updatePosition(String clientId, int xPos, int yPos){
+    private Client updatePosition(String clientId, int xPos, int yPos, int speed, int angle){
         Client client = getClient(clientId);
         client.setxPos(xPos);
         client.setyPos(yPos);
+        client.setSpeed(speed);
+        client.setAngle(angle);
         return client;
     }
 

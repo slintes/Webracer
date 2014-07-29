@@ -27,6 +27,20 @@ public interface Car {
     public int getYPosition();
 
     /**
+     * get the speed for the next round
+     *
+     * @return speed
+     */
+    public int getSpeed();
+
+    /**
+     * get the angle for the next round
+     *
+     * @return angle
+     */
+    public int getAngle();
+
+    /**
      * check if car has crashed
      *
      * @return true if car has crashed

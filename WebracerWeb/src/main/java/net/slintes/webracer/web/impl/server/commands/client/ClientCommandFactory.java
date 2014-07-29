@@ -2,6 +2,7 @@ package net.slintes.webracer.web.impl.server.commands.client;
 
 import net.slintes.webracer.web.impl.server.commands.client.impl.ClientRegisterCarCommand;
 import net.slintes.webracer.web.impl.server.commands.client.impl.ClientRegisterClientCommand;
+import net.slintes.webracer.web.impl.server.commands.client.impl.ClientUpdatePositionCommand;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -18,6 +19,12 @@ public class ClientCommandFactory {
 
     private static final String COMMAND_REGISTER_CAR = "registerCar";
     private static final String COMMAND_REGISTER_CAR_NAME = "name";
+
+    private static final String COMMAND_UPDATE_POSITION = "updatePosition";
+    private static final String COMMAND_UPDATE_POSITION_POS_X = "posX";
+    private static final String COMMAND_UPDATE_POSITION_POS_Y = "posY";
+    private static final String COMMAND_UPDATE_POSITION_SPEED = "speed";
+    private static final String COMMAND_UPDATE_POSITION_ANGLE = "angle";
 
     private final JSONParser parser;
 
@@ -48,6 +55,14 @@ public class ClientCommandFactory {
                 ClientRegisterCarCommand registerCarCommand =
                         new ClientRegisterCarCommand(ClientCommandType.RegisterCar, name);
                 return registerCarCommand;
+            case COMMAND_UPDATE_POSITION:
+                int posX = ((Long) jsonData.get(COMMAND_UPDATE_POSITION_POS_X)).intValue();
+                int posY = ((Long) jsonData.get(COMMAND_UPDATE_POSITION_POS_Y)).intValue();
+                int speed = ((Long) jsonData.get(COMMAND_UPDATE_POSITION_SPEED)).intValue();
+                int angle = ((Long) jsonData.get(COMMAND_UPDATE_POSITION_ANGLE)).intValue();
+                ClientUpdatePositionCommand updatePositionCommand =
+                        new ClientUpdatePositionCommand(ClientCommandType.UpdatePosition, posX, posY, speed, angle);
+                return updatePositionCommand;
             default: return null;
         }
 

@@ -52,8 +52,9 @@ public interface Race {
      * @param clientId the clients unique id from registerClient()
      * @param xPos x position
      * @param yPos y position
+     * @param angle the angle
      */
-    public void nextPosition(String clientId, int xPos, int yPos);
+    public void nextPosition(String clientId, int xPos, int yPos, int speed, int angle);
 
     /**
      * the client has crashed at given position
@@ -61,8 +62,9 @@ public interface Race {
      * @param clientId the clients unique id from registerClient()
      * @param xPos x position
      * @param yPos y position
+     * @param angle the angle
      */
-    public void crash(String clientId, int xPos, int yPos);
+    public void crash(String clientId, int xPos, int yPos, int angle);
 
     /**
      * the client has reached the finish line at given position
@@ -70,7 +72,8 @@ public interface Race {
      * @param clientId the clients unique id from registerClient()
      * @param xPos x position
      * @param yPos y position
+     * @param angle the angle
      */
-    public void finish(String clientId, int xPos, int yPos);
+    public void finish(String clientId, int xPos, int yPos, int angle);
 
 }

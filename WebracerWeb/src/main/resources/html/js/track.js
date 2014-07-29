@@ -58,6 +58,22 @@
 
         Q.state.on("change." + WSS_ADDCAR, addCar);
 
+        var updateCar = function(data){
+            var clientId = data[WSS_UPDATE_CAR_ID];
+            if(Q.state.get(CLIENTID) == clientId){
+                return; // our own car...
+            }
+
+            var xPos = data[WSS_UPDATE_CAR_XPOS];
+            var yPos = data[WSS_UPDATE_CAR_YPOS];
+            var speed = data[WSS_UPDATE_CAR_SPEED];
+            var angle = data[WSS_UPDATE_CAR_ANGLE];
+
+            var otherCar = stage.otherCars[clientId];
+            otherCar.RaceControlOther.nextRound(xPos, yPos, speed, angle);
+        }
+
+        Q.state.on("change." + WSS_UPDATE_CAR, updateCar);
     });
 
 };

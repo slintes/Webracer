@@ -5,6 +5,6 @@ package net.slintes.webracer.web.impl.server.commands.client;
  */
 public enum ClientCommandType {
 
-    RegisterClient, RegisterCar
+    RegisterClient, RegisterCar, UpdatePosition
 
 }

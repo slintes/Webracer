@@ -10,6 +10,8 @@ public class Client implements Car {
     private int startPosition = 0;
     private int xPos = 0;
     private int yPos = 0;
+    private int speed = 0;
+    private int angle = 90;
     private boolean isCrashed = false;
     private boolean isFinished = false;
     private String name = null;
@@ -32,6 +34,16 @@ public class Client implements Car {
     @Override
     public int getYPosition() {
         return yPos;
+    }
+
+    @Override
+    public int getSpeed() {
+        return speed;
+    }
+
+    @Override
+    public int getAngle() {
+        return angle;
     }
 
     @Override
@@ -65,6 +77,14 @@ public class Client implements Car {
 
     public void setyPos(int yPos) {
         this.yPos = yPos;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public void setAngle(int angle) {
+        this.angle = angle;
     }
 
     public void setCrashed(boolean isCrashed) {

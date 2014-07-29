@@ -100,7 +100,7 @@
 
             var p = this.entity.p;
 
-            if (p.broken) {
+            if (p.broken || p.finished) {
                 return;
             }
 
@@ -155,8 +155,8 @@
             p.stepDistance = speed;
 
             // calculate x and y of movement
-            p.diffX = (Math.sin(2 * Math.PI * p.angle / 360) * p.stepDistance);
-            p.diffY = -(Math.cos(2 * Math.PI * p.angle / 360) * p.stepDistance);
+            p.diffX = Math.round( (Math.sin(2 * Math.PI * p.angle / 360) * p.stepDistance) );
+            p.diffY = Math.round( -(Math.cos(2 * Math.PI * p.angle / 360) * p.stepDistance) );
 
             // prepare movement
             if (p.diffY || p.diffX) {
@@ -166,6 +166,15 @@
                 p.destX = p.x + p.diffX;
                 p.destY = p.y + p.diffY;
                 p.stepWait = p.stepDelay;
+
+                // send new position to backend
+                var data = {};
+                data[WSC_UPDATE_POS_X] = Math.round(p.destX);
+                data[WSC_UPDATE_POS_Y] = Math.round(p.destY);
+                data[WSC_UPDATE_POS_SPEED] = p.stepDistance;
+                data[WSC_UPDATE_POS_ANGLE] = p.angle;
+                Q.sendCommand(WSC_UPDATE_POS, data);
+
             }
 
         }

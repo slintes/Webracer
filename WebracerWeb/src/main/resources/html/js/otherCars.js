@@ -51,15 +51,20 @@
 
         },
 
-        nextRound: function (xPos, yPos) {
-
-            // calculate next round
+        // called by backend via track.js
+        nextRound: function (xPos, yPos, speed, angle) {
 
             var p = this.entity.p;
 
-            // calculate x and y of movement
+            if (p.broken || p.finished) {
+                return;
+            }
+
+            // set data for next round
             p.diffX = xPos - p.x;
-            p.diffY = yPos - p.y
+            p.diffY = yPos - p.y;
+            p.angle = angle;
+            p.stepDistance = speed;
 
             // prepare movement
             if (p.diffY || p.diffX) {

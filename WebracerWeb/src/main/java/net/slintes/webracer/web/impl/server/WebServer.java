@@ -8,10 +8,12 @@ import net.slintes.webracer.web.impl.server.commands.client.ClientCommandFactory
 import net.slintes.webracer.web.impl.server.commands.client.ClientCommandType;
 import net.slintes.webracer.web.impl.server.commands.client.impl.ClientRegisterCarCommand;
 import net.slintes.webracer.web.impl.server.commands.client.impl.ClientRegisterClientCommand;
+import net.slintes.webracer.web.impl.server.commands.client.impl.ClientUpdatePositionCommand;
 import net.slintes.webracer.web.impl.server.commands.server.ServerCommand;
 import net.slintes.webracer.web.impl.server.commands.server.impl.ServerAddCarCommand;
 import net.slintes.webracer.web.impl.server.commands.server.impl.ServerMessageCommand;
 import net.slintes.webracer.web.impl.server.commands.server.impl.ServerStartCommand;
+import net.slintes.webracer.web.impl.server.commands.server.impl.ServerUpdateCarCommand;
 import net.slintes.webracer.web.impl.server.netty.WebServerStarter;
 import net.slintes.webracer.web.impl.server.netty.WebSocketAdapter;
 
@@ -75,9 +77,13 @@ public class WebServer implements UICallback {
                     sendCommand(clientId, new ServerMessageCommand("Sorry" + name + ", joining not possible at the moment"));
                 }
                 break;
+            case UpdatePosition:
+                ClientUpdatePositionCommand updatePositionCommand = (ClientUpdatePositionCommand) clientCommand;
+                race.nextPosition(clientId, updatePositionCommand.getXPos(), updatePositionCommand.getYPos(),
+                        updatePositionCommand.getSpeed(), updatePositionCommand.getAngle());
+                break;
         }
 
-        return;
     }
 
     public void unRegisterClient(WebSocketAdapter wsa) {
@@ -108,7 +114,7 @@ public class WebServer implements UICallback {
 
     @Override
     public void updateCar(Car car) {
-
+        sendCommand(new ServerUpdateCarCommand(car));
     }
 
     @Override
