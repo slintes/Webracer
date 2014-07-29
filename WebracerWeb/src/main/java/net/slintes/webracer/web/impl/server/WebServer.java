@@ -68,7 +68,11 @@ public class WebServer implements UICallback {
             case RegisterCar:
                 ClientRegisterCarCommand registerCarCommand = (ClientRegisterCarCommand) clientCommand;
                 String name = registerCarCommand.getName();
-                race.registerCar(clientId, name);
+                int startPos = race.registerCar(clientId, name);
+                if(startPos == 0){
+                    // TODO test this
+                    sendCommand(clientId, new ServerMessageCommand("Sorry" + name + ", joining not possible at the moment"));
+                }
                 break;
         }
 
