@@ -21,7 +21,7 @@ public class RaceImpl implements Race {
     private final List<Client> clients = new ArrayList<>();
 
     public RaceImpl(Track track){
-        System.out.println("new Race");
+//        System.out.println("new Race");
         this.track = track;
     }
 
@@ -49,7 +49,11 @@ public class RaceImpl implements Race {
     @Override
     synchronized public void unRegisterClient(String clientId) {
         Client client = getClient(clientId);
+        if(client == null){
+            return;
+        }
         clients.remove(client);
+        uiCallback.removeCar(clientId);
         if(client.getName() != null){
             raceControl.removeCar(client.getName());
         }
@@ -62,7 +66,7 @@ public class RaceImpl implements Race {
         }
 
         Client client = getClient(clientId);
-        int startPosition = getNrOfCars() + 1;
+        int startPosition = getNextStartPosition();
         client.setStartPosition(startPosition);
         client.setName(name);
 
@@ -98,9 +102,8 @@ public class RaceImpl implements Race {
         checkForDrivingCars();
     }
 
-
     private Client getClient(String clientId){
-        return clients.stream().filter(c -> c.getClientId().equals(clientId)).findFirst().get();
+        return clients.stream().filter(c -> c.getClientId().equals(clientId)).findFirst().orElse(null);
     }
 
     private boolean maxNrCarsReached(){
@@ -108,7 +111,19 @@ public class RaceImpl implements Race {
     }
 
     private int getNrOfCars(){
-        return (int)clients.stream().filter(c -> c.getName() != null).count();
+        return (int)clients.stream().filter(c -> c.getStartPosition() > 0).count();
+    }
+
+    private int getNextStartPosition(){
+        int startPos = 0;
+        for(int i = 1; i <= MAX_NR_CARS; i++){
+            final int finalI = i;
+            if(clients.stream().allMatch(c -> c.getStartPosition() != finalI)) {
+                startPos = i;
+                break;
+            }
+        }
+        return startPos;
     }
 
     private Client updatePosition(String clientId, int xPos, int yPos, int speed, int angle){

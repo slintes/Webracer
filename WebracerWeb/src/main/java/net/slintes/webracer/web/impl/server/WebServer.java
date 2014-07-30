@@ -10,10 +10,7 @@ import net.slintes.webracer.web.impl.server.commands.client.impl.ClientRegisterC
 import net.slintes.webracer.web.impl.server.commands.client.impl.ClientRegisterClientCommand;
 import net.slintes.webracer.web.impl.server.commands.client.impl.ClientUpdatePositionCommand;
 import net.slintes.webracer.web.impl.server.commands.server.ServerCommand;
-import net.slintes.webracer.web.impl.server.commands.server.impl.ServerAddCarCommand;
-import net.slintes.webracer.web.impl.server.commands.server.impl.ServerMessageCommand;
-import net.slintes.webracer.web.impl.server.commands.server.impl.ServerStartCommand;
-import net.slintes.webracer.web.impl.server.commands.server.impl.ServerUpdateCarCommand;
+import net.slintes.webracer.web.impl.server.commands.server.impl.*;
 import net.slintes.webracer.web.impl.server.netty.WebServerStarter;
 import net.slintes.webracer.web.impl.server.netty.WebSocketAdapter;
 
@@ -110,6 +107,11 @@ public class WebServer implements UICallback {
     @Override
     public void addCar(String clientId, Car car) {
         sendCommand(clientId, new ServerAddCarCommand(race.getTrack(), car));
+    }
+
+    @Override
+    public void removeCar(String clientId) {
+        sendCommand(new ServerRemoveCarCommand(clientId));
     }
 
     @Override

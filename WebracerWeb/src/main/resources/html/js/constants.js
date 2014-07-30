@@ -42,30 +42,33 @@ var WSS_MESSAGE = "ws-message"; // command name
 var WSS_MESSAGE_MESSAGE = "message"; // value name
 
 var WSS_ADDCAR = "ws-addCar"; // command name
-var WSS_ADDCAR_CLIENTID = "clientId"; // value name
-var WSS_ADDCAR_NAME = "name"; // value name
-var WSS_ADDCAR_STARTPOS = "startPosition"; // value name
-var WSS_ADDCAR_XPOS = "startPositionX"; // value name
-var WSS_ADDCAR_YPOS = "startPositionY"; // value name
+var WSS_ADDCAR_CLIENTID = "clientId"; // data name
+var WSS_ADDCAR_NAME = "name"; // data name
+var WSS_ADDCAR_STARTPOS = "startPosition"; // data name
+var WSS_ADDCAR_XPOS = "startPositionX"; // data name
+var WSS_ADDCAR_YPOS = "startPositionY"; // data name
+
+var WSS_REMOVECAR = "ws-removeCar"; // command name
+var WSS_REMOVECAR_CLIENTID = "clientId"; // data name
 
 var WSS_START = "ws-start"; // command name
 
-var WSS_UPDATE_CAR = "ws-updateCar";
-var WSS_UPDATE_CAR_XPOS = "xPos";
-var WSS_UPDATE_CAR_YPOS = "yPos";
-var WSS_UPDATE_CAR_SPEED = "speed";
-var WSS_UPDATE_CAR_ANGLE = "angle";
-var WSS_UPDATE_CAR_ID = "clientId";
+var WSS_UPDATE_CAR = "ws-updateCar"; // command name
+var WSS_UPDATE_CAR_XPOS = "xPos"; // data name
+var WSS_UPDATE_CAR_YPOS = "yPos"; // data name
+var WSS_UPDATE_CAR_SPEED = "speed"; // data name
+var WSS_UPDATE_CAR_ANGLE = "angle"; // data name
+var WSS_UPDATE_CAR_ID = "clientId"; // data name
 
 // websocket client commands
 var WSC_REGISTER_CLIENT = "registerClient"; // command name
-var WSC_REGISTER_CLIENT_ID = "clientId"; // value name
+var WSC_REGISTER_CLIENT_ID = "clientId"; // data name
 
 var WSC_REGISTER_CAR = "registerCar"; // command name
-var WSC_REGISTER_CAR_NAME = "name"; // value name
+var WSC_REGISTER_CAR_NAME = "name"; // data name
 
 var WSC_UPDATE_POS = "updatePosition"; // command name
-var WSC_UPDATE_POS_X = "posX";
-var WSC_UPDATE_POS_Y = "posY";
-var WSC_UPDATE_POS_SPEED = "speed";
-var WSC_UPDATE_POS_ANGLE = "angle";
+var WSC_UPDATE_POS_X = "posX"; // data name
+var WSC_UPDATE_POS_Y = "posY"; // data name
+var WSC_UPDATE_POS_SPEED = "speed"; // data name
+var WSC_UPDATE_POS_ANGLE = "angle"; // data name

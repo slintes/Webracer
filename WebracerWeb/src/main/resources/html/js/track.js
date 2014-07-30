@@ -74,6 +74,14 @@
         }
 
         Q.state.on("change." + WSS_UPDATE_CAR, updateCar);
+
+        var removeCar = function(data){
+            var clientId = data[WSS_REMOVECAR_CLIENTID];
+            var otherCar = stage.otherCars[clientId];
+            stage.remove(otherCar);
+        }
+
+        Q.state.on("change." + WSS_REMOVECAR, removeCar);
     });
 
 };

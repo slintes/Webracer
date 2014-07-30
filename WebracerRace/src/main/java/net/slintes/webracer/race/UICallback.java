@@ -26,6 +26,13 @@ public interface UICallback {
     public void addCar(String clientId, Car car);
 
     /**
+     * removes the car with the given clientId from the track
+     *
+     * @param clientId the id of the car which should be removed
+     */
+    public void removeCar(String clientId);
+
+    /**
      * update car
      *
      * @param car the car which is updated
