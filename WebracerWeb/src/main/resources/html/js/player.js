@@ -163,10 +163,13 @@
             Q.state.set(STEERING, steering)
 
             // rotate car according to steering
+            var angleChanged = false;
             if (steering == STEERING_LEFT) {
                 p.angle -= DEGREES;
+                angleChanged = true;
             } else if (steering == STEERING_RIGHT) {
                 p.angle += DEGREES;
+                angleChanged = true;
             }
             Q.state.set(STEERING_ANGLE, p.angle)
 
@@ -208,6 +211,18 @@
                 var data = {};
                 data[WSC_UPDATE_POS_X] = Math.round(p.destX);
                 data[WSC_UPDATE_POS_Y] = Math.round(p.destY);
+                data[WSC_UPDATE_POS_SPEED] = p.stepDistance;
+                data[WSC_UPDATE_POS_ANGLE] = p.angle;
+                data[WSC_UPDATE_POS_CRASHED] = p.crashed;
+                data[WSC_UPDATE_POS_FINISHED] = p.finished;
+                Q.sendCommand(WSC_UPDATE_POS, data);
+
+            } else if(angleChanged){
+
+                // we are not moving, but we rotated
+                var data = {};
+                data[WSC_UPDATE_POS_X] = Math.round(p.x);
+                data[WSC_UPDATE_POS_Y] = Math.round(p.y);
                 data[WSC_UPDATE_POS_SPEED] = p.stepDistance;
                 data[WSC_UPDATE_POS_ANGLE] = p.angle;
                 data[WSC_UPDATE_POS_CRASHED] = p.crashed;
