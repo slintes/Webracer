@@ -1,7 +1,7 @@
-package net.slintes.webracer.track.one;
+package net.slintes.webracer.track.longTrack;
 
 import net.slintes.webracer.track.Track;
-import net.slintes.webracer.track.one.impl.TrackOne;
+import net.slintes.webracer.track.longTrack.impl.TrackLong;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -15,7 +15,7 @@ public class TrackActivator implements BundleActivator {
 
     @Override
     public void start(BundleContext context) throws Exception {
-        Track track = new TrackOne();
+        Track track = new TrackLong();
         registration = context.registerService(Track.class.getName(), track, null);
     }
 

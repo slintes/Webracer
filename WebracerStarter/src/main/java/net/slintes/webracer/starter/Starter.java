@@ -26,7 +26,8 @@ public class Starter {
             // Install bundles
             BundleContext context = framework.getBundleContext();
             Bundle track = context.installBundle("file:repoOsgi/WebracerTrack.jar");
-            Bundle track1impl = context.installBundle("file:repoOsgi/WebracerTrack1Impl.jar");
+            Bundle trackLongImpl = context.installBundle("file:repoOsgi/WebracerTrackLongImpl.jar");
+            Bundle trackShortImpl = context.installBundle("file:repoOsgi/WebracerTrackShortImpl.jar");
             Bundle race = context.installBundle("file:repoOsgi/WebracerRace.jar");
             Bundle web = context.installBundle("file:repoOsgi/WebracerWeb.jar");
 
@@ -35,11 +36,11 @@ public class Starter {
 
             // order is important...
             track.start();
-            track1impl.start();
+//            trackLongImpl.start();
+            trackShortImpl.start();
             race.start();
             web.start();
 
-//            framework.stop();
         }
         catch (Exception exception)
         {

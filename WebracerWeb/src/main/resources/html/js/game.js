@@ -5,7 +5,7 @@ window.addEventListener('load', function () {
         .include("Sprites, Scenes, Input, 2D, UI") // Quintus
         .include("WebracerPlayer, WebracerOtherCars, WebracerTrack, Websocket") // own
         .include("WebracerTextStatus, WebracerGraphicalStatus, WebracerMessageBox") // more own
-        .setup({width: 800, height: 700})
+        .setup({width: 800, height: 500})
         .controls(true);
 
 
@@ -15,7 +15,7 @@ window.addEventListener('load', function () {
 
     // preload all needed data, init some things when done
     Q.load(PATH + "images/track.png, " +
-            PATH + "data/track.json, " +
+            PATH + "track/track.json, " +
             PATH + "images/cars.png, " +
             PATH + "data/cars.json, " +
             PATH + "images/steeringWheelAndGears.png, " +

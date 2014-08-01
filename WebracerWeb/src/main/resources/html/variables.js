@@ -4,8 +4,8 @@
 var TIMEOUT = 1000;
 
 // speed in px / TIMEOUT
-var SPEED1 = 10;
-var SPEED2 = 30;
+var SPEED1 = 15;
+var SPEED2 = 40;
 
 // steering left/right
-var DEGREES = 30;
+var DEGREES = 20;

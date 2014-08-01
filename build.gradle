@@ -22,7 +22,8 @@ ext {
     webVersion = '0.1.0.SNAPSHOT'
     raceVersion = '0.1.0.SNAPSHOT'
     trackVersion = '0.1.0.SNAPSHOT'
-    track1Version = '0.1.0.SNAPSHOT'
+    trackLongVersion = '0.1.0.SNAPSHOT'
+    trackShortVersion = '0.1.0.SNAPSHOT'
 }
 
 repositories{
@@ -77,7 +78,8 @@ dependencies {
     // define dependencies to subprojects for the copyToLibs task
     compile project(":WebracerWeb")
     compile project(":WebracerTrack")
-    compile project(":WebracerTrack1Impl")
+    compile project(":WebracerTrackLongImpl")
+    compile project(":WebracerTrackShortImpl")
     compile project(":WebracerRace")
     compile project(":WebracerStarter")
 

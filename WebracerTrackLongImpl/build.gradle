@@ -1,0 +1,26 @@
+version = "$trackLongVersion"
+
+dependencies {
+    provided "net.slintes.webracer:track:$trackVersion"
+}
+
+jar {
+    archiveName = "$jar.baseName.$jar.extension"
+}
+
+bundle {
+    instructions << [
+            'Bundle-Name': 'WebracerTrackImpl-Long',
+            'Bundle-Description': 'Long Track implementation',
+            'Bundle-SymbolicName': 'net.slintes.webracer.track.longTrack',
+            'Bundle-Activator': 'net.slintes.webracer.track.longTrack.TrackActivator',
+            'Export-Package': 'net.slintes.webracer.track.longTrack',
+            'Import-Package': 'net.slintes.webracer.track,org.osgi.framework'
+    ]
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.artifactId = 'track-long-impl'
+    }
+}

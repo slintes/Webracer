@@ -1,4 +1,4 @@
-package net.slintes.webracer.track.one.impl;
+package net.slintes.webracer.track.shortTrack.impl;
 
 import net.slintes.webracer.track.Track;
 
@@ -10,7 +10,7 @@ import java.net.URL;
 /**
  *
  */
-public class TrackOne implements Track {
+public class TrackShort implements Track {
 
     private static final String fileName = "/track.txt";
 

@@ -12,7 +12,7 @@
     Q.scene("track", function (stage) {
         stage.collisionLayer(
             new Q.RaceTileLayer({
-                dataAsset: PATH + "data/track.json",
+                dataAsset: PATH + "track/track.json",
                 sheet: "tiles",
                 tileW: 9,
                 tileH: 9
