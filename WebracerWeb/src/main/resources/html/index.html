@@ -23,6 +23,20 @@
     <div style="width: 100%; text-align: center">
         <h2>Welcome to Webracer</h2>
 
+        The rules:<br>
+        Each car can turn left, go straight on, or turn right.<br>
+        Each car can drive at 3 speeds: 0, 1 and 2. On grass speed 2 is not possible.<br>
+        Hitting the wall ends the race for you.<br>
+        The game is kind of round based: each round is 1 second, and in each round you can only change steering OR
+        speed in 1 step.<br>
+        Control your car with the keyboard arrow keys: up = accelerate, down = brake, left & right = turn the
+        steering wheel.<br>
+        The blue box displays the current steering, the current speed, and your command for the next round.<br>
+        Thew red box shows messages from the race control.<br>
+        The race starts when at least 2 players joined and no one joined for 10 seconds.<br>
+
+        <br>
+
         <form action="#" onsubmit="return joinRace(this);">
             Name: <input name="name" type="text" size="20" maxlength="20">
             <input name="submit" type="submit" value="Join Race"/>
