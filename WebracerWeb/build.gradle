@@ -1,14 +1,8 @@
-version = "$webVersion"
-
 dependencies {
-    provided "net.slintes.webracer:race:$raceVersion"
+    provided project(':WebracerRace')
     compile 'org.eclipse.jetty:jetty-server:9.2.1.v20140609'
     compile 'org.eclipse.jetty.websocket:websocket-server:9.2.1.v20140609'
     compile 'com.googlecode.json-simple:json-simple:1.1'
-}
-
-jar {
-    archiveName = "$jar.baseName.$jar.extension"
 }
 
 bundle {
@@ -20,10 +14,4 @@ bundle {
             'Export-Package': '',
             'Import-Package': 'net.slintes.webracer.race,org.osgi.framework'
     ]
-}
-
-install {
-    repositories.mavenInstaller {
-        pom.artifactId = 'web'
-    }
 }

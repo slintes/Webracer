@@ -9,22 +9,6 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'maven'
-
-version = '0.1.0.SNAPSHOT'
-group = 'net.slintes.webracer'
-
-sourceCompatibility = 1.8
-
-ext {
-    // central management of version numbers
-    starterVersion = '0.1.0.SNAPSHOT'
-    webVersion = '0.1.0.SNAPSHOT'
-    raceVersion = '0.1.0.SNAPSHOT'
-    trackVersion = '0.1.0.SNAPSHOT'
-    trackLongVersion = '0.1.0.SNAPSHOT'
-    trackShortVersion = '0.1.0.SNAPSHOT'
-}
 
 repositories{
     mavenCentral()
@@ -48,9 +32,6 @@ configure(subprojects.findAll()) { subproject ->
 
     apply plugin: 'java'
 
-    // for maven plugin
-    group = "$rootProject.group"
-
     dependencies {
         provided 'org.apache.felix:org.apache.felix.framework:4.4.1'
     }
@@ -59,8 +40,9 @@ configure(subprojects.findAll()) { subproject ->
 
 // configuration for all OSGi subprojects
 configure(subprojects.findAll {it.name != 'WebracerStarter'}) { subproject ->
-    apply plugin: 'maven'
+
     apply plugin: 'bundle'
+
 //    bundle {
 //        trace = true
 //    }
@@ -76,23 +58,22 @@ configure(subprojects.findAll {it.name != 'WebracerStarter'}) { subproject ->
 dependencies {
 
     // define dependencies to subprojects for the copyToLibs task
-    compile project(":WebracerWeb")
-    compile project(":WebracerTrack")
-    compile project(":WebracerTrackLongImpl")
-    compile project(":WebracerTrackShortImpl")
-    compile project(":WebracerRace")
-    compile project(":WebracerStarter")
+    compile project(':WebracerTrack')
+    compile project(':WebracerTrackLongImpl')
+    compile project(':WebracerTrackShortImpl')
+    compile project(':WebracerRace')
+    compile project(':WebracerWeb')
+    compile project(':WebracerStarter')
 
 }
 
-task copyToLibs(type: Copy, dependsOn: 'jar') {
+task install(type: Copy, dependsOn: 'jar') {
     // copy all jars to one directory, which then can be used by OSGi framework
     into 'repoOsgi'
-    from configurations.runtime
+    from configurations.compile
             .filter {it.name.startsWith('Webracer')}
 }
-jar.finalizedBy copyToLibs
-install.finalizedBy copyToLibs
+jar.finalizedBy install
 
 // create/update gradle wrapper
 task wrapper(type: Wrapper) {

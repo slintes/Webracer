@@ -1,11 +1,5 @@
-version = "$trackShortVersion"
-
 dependencies {
-    provided "net.slintes.webracer:track:$trackVersion"
-}
-
-jar {
-    archiveName = "$jar.baseName.$jar.extension"
+    provided project(':WebracerTrack')
 }
 
 bundle {
@@ -17,10 +11,4 @@ bundle {
             'Export-Package': 'net.slintes.webracer.track.shortTrack',
             'Import-Package': 'net.slintes.webracer.track,org.osgi.framework'
     ]
-}
-
-install {
-    repositories.mavenInstaller {
-        pom.artifactId = 'track-short-impl'
-    }
 }
