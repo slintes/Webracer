@@ -104,10 +104,10 @@ public class RaceImpl implements Race {
         uiCallback.updateCar(client);
 
         if(client.getResultPosition() == 1){
-            raceControl.raceWon(client);
+            raceControl.raceWon(client, getResultString());
         }
         else {
-            raceControl.raceFinished(client);
+            raceControl.raceFinished(client, getResultString());
         }
 
         checkForDrivingCars();
@@ -148,13 +148,31 @@ public class RaceImpl implements Race {
 
     private void checkForDrivingCars() {
         // finish the race when all cars crashed or finished
-        boolean drivingCars = clients.stream().anyMatch(c -> !c.isCrashed() && !c.isFinished());
+        boolean drivingCars = clients.stream().filter(c -> c.getStartPosition() > 0).anyMatch(c -> !c.isCrashed() && !c.isFinished());
         if(!drivingCars){
-            raceControl.raceReady();
+            raceControl.raceReady(getResultString());
         }
     }
 
     private int getNrFinishedCars(){
         return new Long(clients.stream().filter(c -> c.isFinished()).count()).intValue();
+    }
+
+    private String getResultString(){
+        StringBuilder result = new StringBuilder();
+        result.append("Results:");
+        clients.stream()
+                .filter(c -> c.isFinished())
+                .sorted((c1, c2) -> new Long(c1.getResultTime()).compareTo(new Long(c2.getResultTime())))
+                .forEach(c -> result.append("\n" + c.getResultPosition() + ": " + c.getName() + " (" + getTimeString(c.getResultTime()) + ")"));
+
+        return result.toString();
+    }
+
+    private String getTimeString(long resultInMs) {
+        long h = resultInMs / 100 % 10;
+        long s = (resultInMs / 1000) % 60;
+        long m = (resultInMs / (60 * 1000)) % 60;
+        return String.format("%d:%02d,%d", m, s, h);
     }
 }

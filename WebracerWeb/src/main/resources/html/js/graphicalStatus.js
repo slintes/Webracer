@@ -30,21 +30,18 @@
     Q.scene('graphicalStatus', function (stage) {
 
         var box = stage.insert(new Q.UI.Container({
-            fill: "rgba(0,0,255,0.3)",
-            border: 2,
+            fill: "rgba(0,0,255,0.4)",
+            border: 5,
             x: 100,
-            y: 350,
+            y: 320,
             scale: 0.5
         }));
 
-        var gearX = 150;
-        var commandX = 300;
-
         var steering = box.insert(new Q.SteeringWheel({x: 0, y: 0}));
-        var gear = box.insert(new Q.Gear({x: gearX, y: 0}));
-        var command = box.insert(new Q.Command({x: commandX, y: 0, frame: 1}));
+        var gear = box.insert(new Q.Gear({x: 150, y: 0}));
+        var command = box.insert(new Q.Command({x: 40, y: 250, frame: 1}));
 
-        box.fit(10);
+        box.fit(20);
 
         updateSteering = function () {
             var st = Q.state.get(STEERING);

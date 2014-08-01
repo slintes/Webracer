@@ -3,6 +3,7 @@ package net.slintes.webracer.race.impl;
 import net.slintes.webracer.race.Car;
 import net.slintes.webracer.race.UICallback;
 
+import java.util.Arrays;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +33,7 @@ public class RaceControl {
     private String lastMessage = null;
     private int skipCount = 0;
 
+    private String currentResult = "";
 
     public RaceControl(UICallback uiCallBack) {
         this.uiCallBack = uiCallBack;
@@ -70,11 +72,13 @@ public class RaceControl {
         showMessage(name + " left the race");
     }
 
-    public void raceFinished(Client car) {
+    public void raceFinished(Client car, String currentResult) {
+        this.currentResult = currentResult;
         uiCallBack.showMessage(car.getName() + " finished the race on position " + car.getResultPosition() + " !");
     }
 
-    public void raceWon(Car car) {
+    public void raceWon(Car car, String currentResult) {
+        this.currentResult = currentResult;
         wonTime = startTime + car.getResultTime();
         state = RaceState.WON;
         uiCallBack.showMessage(car.getName() + " won the race! CONGRATULATIONS!");
@@ -84,10 +88,14 @@ public class RaceControl {
         uiCallBack.showMessage(car.getName() + " crashed his car into the wall!");
     }
 
-    public void raceReady(){
+    public void raceReady(String result){
         readyTime = System.currentTimeMillis();
         state = RaceState.READY;
-        uiCallBack.showResults();
+
+        // split the result in single messages, else the message box explodes
+        String[] results = result.split("\n");
+        Arrays.stream(results).forEach(uiCallBack::showMessage);
+
     }
 
     public long getRaceTime(){
@@ -137,7 +145,7 @@ public class RaceControl {
                 TimeUnit.SECONDS.sleep(3);
             } catch (InterruptedException e) {
             }
-            raceReady();
+            raceReady(currentResult);
         }
     }
 
@@ -160,6 +168,7 @@ public class RaceControl {
         secondsToStart = SECONDS_TO_START;
         nrCars = 0;
         state = RaceState.WAITING;
+        currentResult = "";
         uiCallBack.reset();
     }
 

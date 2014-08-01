@@ -46,11 +46,6 @@ public interface UICallback {
     public void showMessage(String message);
 
     /**
-     * show race results (all cars reached finish, or race time out after at leat 1 car finished)
-     */
-    public void showResults();
-
-    /**
      * reset clients (after race finished or timed out)
      */
     public void reset();

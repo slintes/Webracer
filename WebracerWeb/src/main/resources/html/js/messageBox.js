@@ -2,10 +2,10 @@
 
     Q.scene('messageBox', function (stage) {
 
-        // always show the last 5 message
+        // always show the last x message
         // init empty messages
-        var nrMessages = 5;
-        var firstLine = "Messages from Race Control:                                            ";
+        var nrMessages = 12;
+        var firstLine = "Messages from Race Control:                                                      ";
         var messages = new Array();
         messages.push(firstLine);
         for(var i=0; i<nrMessages; i++){
@@ -13,10 +13,10 @@
         }
 
         var box = stage.insert(new Q.UI.Container({
-            fill: "rgba(255,0,0,0.3)",
-            border: 2,
-            x: 550,
-            y: 350,
+            fill: "rgba(255,0,0,0.4)",
+            border: 5,
+            x: 500,
+            y: 380,
             scale: 0.6
         }));
 
@@ -24,7 +24,7 @@
             new Q.UI.Text({x: 0, y: 0, align: "left", label: messages.join('\n')})
         );
 
-        box.fit(10);
+        box.fit(20);
 
         updateMessageBox = function (data) {
             var message = data[WSS_MESSAGE_MESSAGE];

@@ -46,7 +46,7 @@
                 stage.player = stage.insert(player);
 
                 // follow player
-                stage.add("viewport").follow(player);
+                stage.add("viewport"); //.follow(player);
             }
             else {
                 var otherCar = new Q.OtherCar(tilePos(xPos, yPos));

@@ -134,11 +134,6 @@ public class WebServer implements UICallback {
     }
 
     @Override
-    public void showResults() {
-
-    }
-
-    @Override
     public void reset() {
 
     }
