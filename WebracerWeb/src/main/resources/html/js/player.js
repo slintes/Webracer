@@ -23,6 +23,11 @@
         collision: function (col) {
 
             var p = this.entity.p;
+
+            if(p.crashed || p.finished){
+                return;
+            }
+
             var tileNum = col.tile;
 
             // handle grass
@@ -38,22 +43,54 @@
 
             // handle wall
             if (tileNum == TILE_WALL) {
-                p.broken = true;
+                p.crashed = true;
                 p.diffX = 0;
                 p.diffY = 0;
+
+                // send crash position to backend
+                var data = {};
+                data[WSC_UPDATE_POS_X] = Math.round(p.x);
+                data[WSC_UPDATE_POS_Y] = Math.round(p.y);
+                data[WSC_UPDATE_POS_SPEED] = 0;
+                data[WSC_UPDATE_POS_ANGLE] = p.angle;
+                data[WSC_UPDATE_POS_CRASHED] = true;
+                data[WSC_UPDATE_POS_FINISHED] = false;
+                Q.sendCommand(WSC_UPDATE_POS, data);
+
             }
 
             // handle sector 1
             if (tileNum == TILE_SECTOR1) {
-                // TODO
+                p.sector1passed = true;
             }
             // handle sector 2
             if (tileNum == TILE_SECTOR2) {
-                // TODO
+                p.sector2passed = true;
             }
             // handle finish
             if (tileNum == TILE_FINISH) {
-                // TODO
+
+                // check if both sectors have been passed
+                if(p.sector1passed && p.sector2passed){
+                    p.nrLapsDone++;
+                    p.sector1passed = false;
+                    p.sector2passed = false;
+
+                    // race finished?
+                    if(p.nrLapsDone == NR_LAPS){
+                        p.finished = true;
+
+                        // send finish position to backend
+                        var data = {};
+                        data[WSC_UPDATE_POS_X] = Math.round(p.x);
+                        data[WSC_UPDATE_POS_Y] = Math.round(p.y);
+                        data[WSC_UPDATE_POS_SPEED] = 0;
+                        data[WSC_UPDATE_POS_ANGLE] = p.angle;
+                        data[WSC_UPDATE_POS_CRASHED] = false;
+                        data[WSC_UPDATE_POS_FINISHED] = true;
+                        Q.sendCommand(WSC_UPDATE_POS, data);
+                    }
+                }
             }
         },
 
@@ -61,7 +98,7 @@
 
             var p = this.entity.p;
 
-            if (p.broken) {
+            if (p.crashed || p.finished) {
                 return;
             }
 
@@ -100,7 +137,7 @@
 
             var p = this.entity.p;
 
-            if (p.broken || p.finished) {
+            if (p.crashed || p.finished) {
                 return;
             }
 
@@ -173,6 +210,8 @@
                 data[WSC_UPDATE_POS_Y] = Math.round(p.destY);
                 data[WSC_UPDATE_POS_SPEED] = p.stepDistance;
                 data[WSC_UPDATE_POS_ANGLE] = p.angle;
+                data[WSC_UPDATE_POS_CRASHED] = p.crashed;
+                data[WSC_UPDATE_POS_FINISHED] = p.finished;
                 Q.sendCommand(WSC_UPDATE_POS, data);
 
             }
@@ -189,8 +228,11 @@
                 frame: 0, // override with startpos - 1 when added
                 scale: 1.2, // make car a bit bigger
                 angle: 90, // starting position: heading right
-                broken: false, // track if car is broken = hit the wall
+                crashed: false, // track if car has crashed
                 finished: false, // track if car has finished
+                sector1passed: false, // track if car has passed sector 1
+                sector2passed: false, // track if car has passed sector 2
+                nrLapsDone: 0, // track how many laps where driven
                 gravityX: 0, // oh, no gravity please :)
                 gravityY: 0
             });

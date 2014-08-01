@@ -12,13 +12,19 @@ public class ClientUpdatePositionCommand extends AbstractClientCommand {
     private final int yPos;
     private final int speed;
     private final int angle;
+    private boolean isCrashed;
+    private boolean isFinished;
 
-    public ClientUpdatePositionCommand(ClientCommandType type, int xPos, int yPos, int speed, int angle) {
+
+    public ClientUpdatePositionCommand(ClientCommandType type, int xPos, int yPos, int speed, int angle,
+                                       boolean isCrashed, boolean isFinished) {
         super(type);
         this.xPos = xPos;
         this.yPos = yPos;
         this.speed = speed;
         this.angle = angle;
+        this.isCrashed = isCrashed;
+        this.isFinished = isFinished;
 
     }
 
@@ -36,5 +42,13 @@ public class ClientUpdatePositionCommand extends AbstractClientCommand {
 
     public int getAngle() {
         return angle;
+    }
+
+    public boolean isCrashed() {
+        return isCrashed;
+    }
+
+    public boolean isFinished() {
+        return isFinished;
     }
 }

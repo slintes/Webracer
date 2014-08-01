@@ -72,3 +72,5 @@ var WSC_UPDATE_POS_X = "posX"; // data name
 var WSC_UPDATE_POS_Y = "posY"; // data name
 var WSC_UPDATE_POS_SPEED = "speed"; // data name
 var WSC_UPDATE_POS_ANGLE = "angle"; // data name
+var WSC_UPDATE_POS_CRASHED = "crashed"; // data name
+var WSC_UPDATE_POS_FINISHED = "finished"; // data name

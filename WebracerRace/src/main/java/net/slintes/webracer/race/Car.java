@@ -55,6 +55,20 @@ public interface Car {
     public boolean isFinished();
 
     /**
+     * the car's result position
+     *
+     * @return result position
+     */
+    public int getResultPosition();
+
+    /**
+     * the car's result time in ms
+     *
+     * @return result time (ms)
+     */
+    public long getResultTime();
+
+    /**
      * driver's name
      *
      * @return the name

@@ -56,10 +56,6 @@
 
             var p = this.entity.p;
 
-            if (p.broken || p.finished) {
-                return;
-            }
-
             // set data for next round
             p.diffX = xPos - p.x;
             p.diffY = yPos - p.y;
@@ -88,8 +84,6 @@
                 frame: 0, // overwrite with startposition - 1 when added
                 scale: 1.2, // make car a bit bigger
                 angle: 90, // starting position: heading right
-                broken: false, // track if car is broken = hit the wall
-                finished: false, // track if car has finished
                 gravityX: 0, // oh, no gravity please :)
                 gravityY: 0
             });

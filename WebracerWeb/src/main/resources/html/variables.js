@@ -9,3 +9,6 @@ var SPEED2 = 40;
 
 // steering left/right
 var DEGREES = 20;
+
+// nr of laps to go
+var NR_LAPS = 3;

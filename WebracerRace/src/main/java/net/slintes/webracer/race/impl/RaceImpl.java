@@ -87,6 +87,9 @@ public class RaceImpl implements Race {
         Client client = updatePosition(clientId, xPos, yPos, 0, angle);
         client.setCrashed(true);
         uiCallback.updateCar(client);
+
+        raceControl.crash(client);
+
         checkForDrivingCars();
     }
 
@@ -95,9 +98,17 @@ public class RaceImpl implements Race {
     synchronized public void finish(String clientId, int xPos, int yPos, int angle) {
         Client client = updatePosition(clientId, xPos, yPos, 0, angle);
         client.setFinished(true);
+        client.setResultTime(raceControl.getRaceTime());
+        client.setResultPosition(getNrFinishedCars());
+
         uiCallback.updateCar(client);
 
-        raceControl.raceWon();
+        if(client.getResultPosition() == 1){
+            raceControl.raceWon(client);
+        }
+        else {
+            raceControl.raceFinished(client);
+        }
 
         checkForDrivingCars();
     }
@@ -141,5 +152,9 @@ public class RaceImpl implements Race {
         if(!drivingCars){
             raceControl.raceReady();
         }
+    }
+
+    private int getNrFinishedCars(){
+        return new Long(clients.stream().filter(c -> c.isFinished()).count()).intValue();
     }
 }

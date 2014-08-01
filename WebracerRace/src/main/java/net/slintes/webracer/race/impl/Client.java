@@ -14,6 +14,8 @@ public class Client implements Car {
     private int angle = 90;
     private boolean isCrashed = false;
     private boolean isFinished = false;
+    private int resultPosition = 0;
+    private long resultTime = 0;
     private String name = null;
     private String clientId = null;
 
@@ -54,6 +56,16 @@ public class Client implements Car {
     @Override
     public boolean isFinished() {
         return isFinished;
+    }
+
+    @Override
+    public int getResultPosition() {
+        return resultPosition;
+    }
+
+    @Override
+    public long getResultTime() {
+        return resultTime;
     }
 
     @Override
@@ -99,4 +111,11 @@ public class Client implements Car {
         this.name = name;
     }
 
+    public void setResultPosition(int resultPosition) {
+        this.resultPosition = resultPosition;
+    }
+
+    public void setResultTime(long resultTime) {
+        this.resultTime = resultTime;
+    }
 }

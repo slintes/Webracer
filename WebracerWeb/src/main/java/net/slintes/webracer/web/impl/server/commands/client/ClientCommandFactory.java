@@ -25,6 +25,8 @@ public class ClientCommandFactory {
     private static final String COMMAND_UPDATE_POSITION_POS_Y = "posY";
     private static final String COMMAND_UPDATE_POSITION_SPEED = "speed";
     private static final String COMMAND_UPDATE_POSITION_ANGLE = "angle";
+    private static final String COMMAND_UPDATE_POSITION_CRASHED = "crashed";
+    private static final String COMMAND_UPDATE_POSITION_FINISHED = "finished";
 
     private final JSONParser parser;
 
@@ -60,8 +62,11 @@ public class ClientCommandFactory {
                 int posY = ((Long) jsonData.get(COMMAND_UPDATE_POSITION_POS_Y)).intValue();
                 int speed = ((Long) jsonData.get(COMMAND_UPDATE_POSITION_SPEED)).intValue();
                 int angle = ((Long) jsonData.get(COMMAND_UPDATE_POSITION_ANGLE)).intValue();
+                boolean crashed = (boolean) jsonData.get(COMMAND_UPDATE_POSITION_CRASHED);
+                boolean finished = (boolean) jsonData.get(COMMAND_UPDATE_POSITION_FINISHED);
                 ClientUpdatePositionCommand updatePositionCommand =
-                        new ClientUpdatePositionCommand(ClientCommandType.UpdatePosition, posX, posY, speed, angle);
+                        new ClientUpdatePositionCommand(ClientCommandType.UpdatePosition, posX, posY,
+                                speed, angle, crashed, finished);
                 return updatePositionCommand;
             default: return null;
         }

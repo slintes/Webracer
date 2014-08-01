@@ -70,14 +70,23 @@ public class WebServer implements UICallback {
                 String name = registerCarCommand.getName();
                 int startPos = race.registerCar(clientId, name);
                 if(startPos == 0){
-                    // TODO test this
-                    sendCommand(clientId, new ServerMessageCommand("Sorry" + name + ", joining not possible at the moment"));
+                    sendCommand(clientId, new ServerMessageCommand("Sorry " + name + ", joining not possible at the moment"));
                 }
                 break;
             case UpdatePosition:
                 ClientUpdatePositionCommand updatePositionCommand = (ClientUpdatePositionCommand) clientCommand;
-                race.nextPosition(clientId, updatePositionCommand.getXPos(), updatePositionCommand.getYPos(),
-                        updatePositionCommand.getSpeed(), updatePositionCommand.getAngle());
+                if(updatePositionCommand.isCrashed()){
+                    race.crash(clientId, updatePositionCommand.getXPos(), updatePositionCommand.getYPos(),
+                            updatePositionCommand.getAngle());
+                }
+                else if (updatePositionCommand.isFinished()) {
+                    race.finish(clientId, updatePositionCommand.getXPos(), updatePositionCommand.getYPos(),
+                            updatePositionCommand.getAngle());
+                }
+                else {
+                    race.nextPosition(clientId, updatePositionCommand.getXPos(), updatePositionCommand.getYPos(),
+                            updatePositionCommand.getSpeed(), updatePositionCommand.getAngle());
+                }
                 break;
         }
 

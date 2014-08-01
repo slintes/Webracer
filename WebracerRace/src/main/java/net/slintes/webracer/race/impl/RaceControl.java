@@ -70,9 +70,18 @@ public class RaceControl {
         showMessage(name + " left the race");
     }
 
-    public void raceWon(){
-        wonTime = System.currentTimeMillis();
+    public void raceFinished(Client car) {
+        uiCallBack.showMessage(car.getName() + " finished the race on position " + car.getResultPosition() + " !");
+    }
+
+    public void raceWon(Car car) {
+        wonTime = startTime + car.getResultTime();
         state = RaceState.WON;
+        uiCallBack.showMessage(car.getName() + " won the race! CONGRATULATIONS!");
+    }
+
+    public void crash(Car car){
+        uiCallBack.showMessage(car.getName() + " crashed his car into the wall!");
     }
 
     public void raceReady(){
