@@ -32,8 +32,12 @@ configure(subprojects.findAll()) { subproject ->
 
     apply plugin: 'java'
 
-    dependencies {
-        provided 'org.apache.felix:org.apache.felix.framework:4.4.1'
+    jar {
+        // create fat jar containing all compile dependencies
+        from {
+            (configurations.compile - configurations.provided)
+                    .collect { it.isDirectory() ? it : zipTree(it) }
+        }
     }
 
 }
@@ -47,11 +51,10 @@ configure(subprojects.findAll {it.name != 'WebracerStarter'}) { subproject ->
 //        trace = true
 //    }
 
-    jar{
-        // create fat jar containing all compile dependencies
-        from {(configurations.compile - configurations.provided)
-                .collect {it.isDirectory() ? it : zipTree(it)}}
+    dependencies {
+        provided 'org.apache.felix:org.apache.felix.framework:4.4.1'
     }
+
 
 }
 
