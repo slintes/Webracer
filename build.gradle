@@ -64,6 +64,8 @@ dependencies {
     compile project(':WebracerTrack')
     compile project(':WebracerTrackLongImpl')
     compile project(':WebracerTrackShortImpl')
+    compile project(':WebracerDB')
+    compile project(':WebracerDBFileImpl')
     compile project(':WebracerRace')
     compile project(':WebracerWeb')
     compile project(':WebracerStarter')

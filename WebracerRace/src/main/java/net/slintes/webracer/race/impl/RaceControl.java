@@ -1,9 +1,11 @@
 package net.slintes.webracer.race.impl;
 
+import net.slintes.webracer.db.WebracerDB;
 import net.slintes.webracer.race.Car;
 import net.slintes.webracer.race.UICallback;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -20,6 +22,8 @@ public class RaceControl {
     private static final int MINIMUM_NR_CARS = 2;
 
     private final UICallback uiCallBack;
+    private final List<Client> cars;
+    private final RaceDB raceDB;
 
     int nrCars = 0;
     int secondsToStart = SECONDS_TO_START;
@@ -33,10 +37,11 @@ public class RaceControl {
     private String lastMessage = null;
     private int skipCount = 0;
 
-    private String currentResult = "";
-
-    public RaceControl(UICallback uiCallBack) {
+    public RaceControl(UICallback uiCallBack, WebracerDB webracerDB, List<Client> cars) {
         this.uiCallBack = uiCallBack;
+        this.cars = cars;
+
+        this.raceDB = new RaceDB(webracerDB);
 
         ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
         ses.scheduleAtFixedRate(() -> {
@@ -72,13 +77,11 @@ public class RaceControl {
         showMessage(name + " left the race");
     }
 
-    public void raceFinished(Client car, String currentResult) {
-        this.currentResult = currentResult;
+    public void raceFinished(Client car) {
         uiCallBack.showMessage(car.getName() + " finished the race on position " + car.getResultPosition() + " !");
     }
 
-    public void raceWon(Car car, String currentResult) {
-        this.currentResult = currentResult;
+    public void raceWon(Car car) {
         wonTime = startTime + car.getResultTime();
         state = RaceState.WON;
         uiCallBack.showMessage(car.getName() + " won the race! CONGRATULATIONS!");
@@ -88,14 +91,17 @@ public class RaceControl {
         uiCallBack.showMessage(car.getName() + " crashed his car into the wall!");
     }
 
-    public void raceReady(String result){
+    public void raceReady(){
         readyTime = System.currentTimeMillis();
         state = RaceState.READY;
 
-        // split the result in single messages, else the message box explodes
+        // send results to clients
+        String result = getResultString();
         String[] results = result.split("\n");
         Arrays.stream(results).forEach(uiCallBack::showMessage);
 
+        // store results
+        storeResults();
     }
 
     public long getRaceTime(){
@@ -145,7 +151,7 @@ public class RaceControl {
                 TimeUnit.SECONDS.sleep(3);
             } catch (InterruptedException e) {
             }
-            raceReady(currentResult);
+            raceReady();
         }
     }
 
@@ -168,7 +174,7 @@ public class RaceControl {
         secondsToStart = SECONDS_TO_START;
         nrCars = 0;
         state = RaceState.WAITING;
-        currentResult = "";
+        cars.clear();
         uiCallBack.reset();
     }
 
@@ -180,6 +186,28 @@ public class RaceControl {
         skipCount = 0;
         lastMessage = message;
         uiCallBack.showMessage(message);
+    }
+
+    private String getResultString() {
+        StringBuilder result = new StringBuilder();
+        result.append("Results:");
+        cars.stream()
+                .filter(c -> c.isFinished())
+                .sorted((c1, c2) -> new Long(c1.getResultTime()).compareTo(new Long(c2.getResultTime())))
+                .forEach(c -> result.append("\n" + c.getResultPosition() + ": " + c.getName() + " (" + getTimeString(c.getResultTime()) + ")"));
+
+        return result.toString();
+    }
+
+    private String getTimeString(long resultInMs) {
+        long h = resultInMs / 100 % 10;
+        long s = (resultInMs / 1000) % 60;
+        long m = (resultInMs / (60 * 1000)) % 60;
+        return String.format("%d:%02d,%d", m, s, h);
+    }
+
+    private void storeResults(){
+        raceDB.saveResults(startTime, cars);
     }
 
 }

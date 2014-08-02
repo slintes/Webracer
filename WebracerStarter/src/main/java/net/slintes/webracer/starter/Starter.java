@@ -28,6 +28,8 @@ public class Starter {
             Bundle track = context.installBundle("file:repoOsgi/WebracerTrack.jar");
             Bundle trackLongImpl = context.installBundle("file:repoOsgi/WebracerTrackLongImpl.jar");
             Bundle trackShortImpl = context.installBundle("file:repoOsgi/WebracerTrackShortImpl.jar");
+            Bundle db = context.installBundle("file:repoOsgi/WebracerDB.jar");
+            Bundle fileDbImpl = context.installBundle("file:repoOsgi/WebracerDBFileImpl.jar");
             Bundle race = context.installBundle("file:repoOsgi/WebracerRace.jar");
             Bundle web = context.installBundle("file:repoOsgi/WebracerWeb.jar");
 
@@ -38,6 +40,8 @@ public class Starter {
             track.start();
 //            trackLongImpl.start();
             trackShortImpl.start();
+            db.start();
+            fileDbImpl.start();
             race.start();
             web.start();
 

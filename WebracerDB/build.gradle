@@ -1,0 +1,9 @@
+bundle {
+    instructions << [
+            'Bundle-Name'       : 'Webracer-DB',
+            'Bundle-Description': 'DB component for Webracer project',
+            'Bundle-SymbolicName': 'net.slintes.webracer.db',
+            'Export-Package'    : 'net.slintes.webracer.db',
+            'Import-Package'    : 'org.osgi.framework'
+    ]
+}

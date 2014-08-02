@@ -1,5 +1,6 @@
 package net.slintes.webracer.race.impl;
 
+import net.slintes.webracer.db.WebracerDB;
 import net.slintes.webracer.race.Race;
 import net.slintes.webracer.race.UICallback;
 import net.slintes.webracer.track.Track;
@@ -15,20 +16,22 @@ public class RaceImpl implements Race {
     private static final int MAX_NR_CARS = 10;
 
     private final Track track;
+    private final WebracerDB raceDB;
     private UICallback uiCallback;
     private RaceControl raceControl;
 
     private final List<Client> clients = new ArrayList<>();
 
-    public RaceImpl(Track track){
+    public RaceImpl(Track track, WebracerDB raceDB){
 //        System.out.println("new Race");
         this.track = track;
+        this.raceDB = raceDB;
     }
 
     @Override
     public void setUICallback(UICallback uiCallback) {
         this.uiCallback = uiCallback;
-        raceControl = new RaceControl(uiCallback);
+        raceControl = new RaceControl(uiCallback, raceDB, clients);
     }
 
     @Override
@@ -104,10 +107,10 @@ public class RaceImpl implements Race {
         uiCallback.updateCar(client);
 
         if(client.getResultPosition() == 1){
-            raceControl.raceWon(client, getResultString());
+            raceControl.raceWon(client);
         }
         else {
-            raceControl.raceFinished(client, getResultString());
+            raceControl.raceFinished(client);
         }
 
         checkForDrivingCars();
@@ -150,7 +153,7 @@ public class RaceImpl implements Race {
         // finish the race when all cars crashed or finished
         boolean drivingCars = clients.stream().filter(c -> c.getStartPosition() > 0).anyMatch(c -> !c.isCrashed() && !c.isFinished());
         if(!drivingCars){
-            raceControl.raceReady(getResultString());
+            raceControl.raceReady();
         }
     }
 
@@ -158,21 +161,4 @@ public class RaceImpl implements Race {
         return new Long(clients.stream().filter(c -> c.isFinished()).count()).intValue();
     }
 
-    private String getResultString(){
-        StringBuilder result = new StringBuilder();
-        result.append("Results:");
-        clients.stream()
-                .filter(c -> c.isFinished())
-                .sorted((c1, c2) -> new Long(c1.getResultTime()).compareTo(new Long(c2.getResultTime())))
-                .forEach(c -> result.append("\n" + c.getResultPosition() + ": " + c.getName() + " (" + getTimeString(c.getResultTime()) + ")"));
-
-        return result.toString();
-    }
-
-    private String getTimeString(long resultInMs) {
-        long h = resultInMs / 100 % 10;
-        long s = (resultInMs / 1000) % 60;
-        long m = (resultInMs / (60 * 1000)) % 60;
-        return String.format("%d:%02d,%d", m, s, h);
-    }
 }

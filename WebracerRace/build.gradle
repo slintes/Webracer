@@ -1,5 +1,6 @@
 dependencies {
     provided project(':WebracerTrack')
+    provided project(':WebracerDB')
 }
 
 bundle {
@@ -9,6 +10,6 @@ bundle {
             'Bundle-SymbolicName': 'net.slintes.webracer.race',
             'Bundle-Activator': 'net.slintes.webracer.race.RaceActivator',
             'Export-Package': 'net.slintes.webracer.race',
-            'Import-Package': 'net.slintes.webracer.track,org.osgi.framework'
+            'Import-Package': 'net.slintes.webracer.track,net.slintes.webracer.db,org.osgi.framework'
     ]
 }

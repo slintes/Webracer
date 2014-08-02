@@ -1,0 +1,14 @@
+dependencies {
+    provided project(':WebracerDB')
+}
+
+bundle {
+    instructions << [
+            'Bundle-Name'       : 'Webracer-DB-File',
+            'Bundle-Description': 'File-based DB component for Webracer project',
+            'Bundle-SymbolicName': 'net.slintes.webracer.db.file',
+            'Bundle-Activator': 'net.slintes.webracer.db.file.FileDBActivator',
+            'Export-Package'    : 'net.slintes.webracer.db.file',
+            'Import-Package'    : 'net.slintes.webracer.db, org.osgi.framework'
+    ]
+}
