@@ -60,7 +60,7 @@ configure(subprojects.findAll {it.name != 'WebracerStarter'}) { subproject ->
 
 dependencies {
 
-    // define dependencies to subprojects for the copyToLibs task
+    // define dependencies to subprojects for the install task
     compile project(':WebracerTrack')
     compile project(':WebracerTrackLongImpl')
     compile project(':WebracerTrackShortImpl')
