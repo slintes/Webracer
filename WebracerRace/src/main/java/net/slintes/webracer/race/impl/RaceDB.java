@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * saves the race results using the DB bundle
+ * saves the race results using the WebracerDB bundle
  */
 public class RaceDB {
 

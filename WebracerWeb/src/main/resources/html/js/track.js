@@ -23,7 +23,7 @@
             if(this.player){
                 this.player.RaceControl.nextRound();
             }
-        }
+        };
 
         // create place to store other cars to
         stage.otherCars = {};
@@ -31,8 +31,9 @@
         // helper method for converting pixel / tile position
         var tilePos = function (col, row) {
             return { x: (col * TILESIZE)-5, y: (row * TILESIZE)+5 };
-        }
+        };
 
+        // add a car to the track
         var addCar = function(data){
             var clientId = data[WSS_ADDCAR_CLIENTID];
             var xPos = data[WSS_ADDCAR_XPOS];
@@ -49,15 +50,17 @@
                 stage.add("viewport"); //.follow(player);
             }
             else {
+                // car of other player
                 var otherCar = new Q.OtherCar(tilePos(xPos, yPos));
                 otherCar.p.frame = startPos - 1;
                 stage.otherCars[clientId] = stage.insert(otherCar);
             }
 
-        }
+        };
 
         Q.state.on("change." + WSS_ADDCAR, addCar);
 
+        // update position of other player's car
         var updateCar = function(data){
             var clientId = data[WSS_UPDATE_CAR_ID];
             if(Q.state.get(CLIENTID) == clientId){
@@ -71,18 +74,20 @@
 
             var otherCar = stage.otherCars[clientId];
             otherCar.RaceControlOther.nextRound(xPos, yPos, speed, angle);
-        }
+        };
 
         Q.state.on("change." + WSS_UPDATE_CAR, updateCar);
 
+        // remove a car
         var removeCar = function(data){
             var clientId = data[WSS_REMOVECAR_CLIENTID];
             var otherCar = stage.otherCars[clientId];
             stage.remove(otherCar);
-        }
+        };
 
         Q.state.on("change." + WSS_REMOVECAR, removeCar);
 
+        // reset race
         var resetRace = function() {
             // remove all cars
             if(stage.player){
@@ -95,12 +100,13 @@
             }
             stage.otherCars = {};
 
+            // reset state
             Q.state.set(STEERING, STEERING_STRAIGHT);
             Q.state.set(SPEED, 0);
             Q.state.set(LAST_KEY, KEY_NONE);
             Q.state.set(STEERING_ANGLE, 90);
             Q.state.set(ONGRASS, false);
-        }
+        };
 
         Q.state.on("change." + WSS_RESET, resetRace);
     });

@@ -1,8 +1,9 @@
 ;Quintus.WebracerOtherCars = function (Q) {
 
-    // behaviour of players car
+    // behaviour of car
     Q.component("RaceControlOther", {
 
+        // called when component is added
         added: function () {
             var p = this.entity.p;
 
@@ -16,13 +17,10 @@
             this.entity.on("step", this, "step");
         },
 
+        // called permanently by Quintus engine
         step: function (dt) {
 
             var p = this.entity.p;
-
-            if (p.broken) {
-                return;
-            }
 
             // keep track of time
             p.stepWait -= dt;
@@ -76,7 +74,7 @@
 
     });
 
-    // the player
+    // the car's sprite
     Q.Sprite.extend("OtherCar", {
         init: function (p) {
             this._super(p, {
@@ -93,6 +91,5 @@
         }
 
     });
-
 
 };

@@ -28,8 +28,8 @@
             // handle grass
             if (tileNum == TILE_GRASS) {
                 if (Q.state.get("speed") == SPEED2) {
-                    Q.state.set({speed: SPEED1})
-                    Q.state.set({onGrass: true})
+                    Q.state.set({speed: SPEED1});
+                    Q.state.set({onGrass: true});
                 }
             }
             else {
@@ -123,7 +123,7 @@
                     steering = STEERING_RIGHT;
                 }
             }
-            Q.state.set({steering: steering})
+            Q.state.set({steering: steering});
 
             // rotate car according to steering
             if (steering == STEERING_LEFT) {
@@ -131,7 +131,7 @@
             } else if (steering == STEERING_RIGHT) {
                 p.angle += DEGREES;
             }
-            Q.state.set({steeringAngle: p.angle})
+            Q.state.set({steeringAngle: p.angle});
 
             // set new speed
             var speed = Q.state.get("speed");
@@ -151,7 +151,7 @@
                     speed = 0;
                 }
             }
-            Q.state.set({speed: speed})
+            Q.state.set({speed: speed});
             p.stepDistance = speed;
 
             // calculate x and y of movement
@@ -189,18 +189,18 @@
             this.add("2d, RaceControl");
 
             // save the latest key press
-            upPressed = function () {
+            var upPressed = function () {
                 Q.state.set({lastKey: KEY_UP});
             };
-            downPressed = function () {
+            var downPressed = function () {
                 Q.state.set({lastKey: KEY_DOWN});
             };
-            leftPressed = function () {
+            var leftPressed = function () {
                 Q.state.set({lastKey: KEY_LEFT});
             };
-            rightPressed = function () {
+            var rightPressed = function () {
                 Q.state.set({lastKey: KEY_RIGHT});
-            }
+            };
 
             Q.input.on("up", this, upPressed);
             Q.input.on("down", this, downPressed);

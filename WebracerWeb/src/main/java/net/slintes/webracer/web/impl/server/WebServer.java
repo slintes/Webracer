@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- *
+ * this class manages the communication between the race component and the browser clients
  */
 public class WebServer implements UICallback {
 
@@ -45,6 +45,8 @@ public class WebServer implements UICallback {
     /* methods called from WebsocketAdapter */
 
     public void onMessage(WebSocketAdapter wsa, String message) {
+
+        // convert the websocket message to a client command
         ClientCommand clientCommand = clientCommandFactory.getClientCommand(message);
         if(clientCommand == null){
             return;
@@ -52,12 +54,13 @@ public class WebServer implements UICallback {
 
         String clientId = getClientId(wsa);
         if (clientId == null) {
-            // may only be null is command is registerClient
+            // may only be null if command is registerClient
             if(!clientCommand.getType().equals(ClientCommandType.RegisterClient)){
                 return;
             }
         }
 
+        // handle client command
         switch (clientCommand.getType()){
             case RegisterClient:
                 ClientRegisterClientCommand registerClientCommand = (ClientRegisterClientCommand) clientCommand;
@@ -142,11 +145,12 @@ public class WebServer implements UICallback {
     /* private methods */
 
     private void sendCommand(ServerCommand command) {
+        // send command to all clients
         clientSessions.forEach((clientId, wsa) -> sendCommand(clientId, wsa, command));
     }
 
     private void sendCommand(String clientId, ServerCommand command) {
-        // find websocket session
+        // send command to given client
         WebSocketAdapter wsa = clientSessions.get(clientId);
         if(wsa != null){
             sendCommand(clientId, wsa, command);
@@ -158,6 +162,7 @@ public class WebServer implements UICallback {
     }
 
     private void sendCommand(String clientId, WebSocketAdapter wsa, ServerCommand command) {
+        // send command to given websocketadapter
         String json = command.getJson();
         System.out.println("message to client " + clientId + ": " + json);
         try {

@@ -12,7 +12,7 @@ public class WebSocketAdapter extends org.eclipse.jetty.websocket.api.WebSocketA
 
     public WebSocketAdapter(WebServer web){
         this.webServer = web;
-    };
+    }
 
     @Override
     public void onWebSocketClose(int statusCode, String reason) {

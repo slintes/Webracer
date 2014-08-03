@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- * server side websocket command for sending a message to all clients
+ * server side websocket command for adding a car
  */
 public class ServerAddCarCommand extends AbstractServerCommand {
 
@@ -26,6 +26,7 @@ public class ServerAddCarCommand extends AbstractServerCommand {
     }
 
     private int getStartXPosition(String track, int startPos){
+        // find the x position for the given start position in the given track
         String[] rows = track.split("\n");
         String startPosChar = getStartPositionChar(startPos);
         String startRow = Arrays.stream(rows).filter(row -> row.contains(startPosChar)).findFirst().get();
@@ -33,6 +34,7 @@ public class ServerAddCarCommand extends AbstractServerCommand {
     }
 
     private int getStartYPosition(String track, int startPos) {
+        // find the y position for the given start position in the given track
         String[] rows = track.split("\n");
         String startPosChar = getStartPositionChar(startPos);
         for(int i=0; i<rows.length; i++){
@@ -44,6 +46,7 @@ public class ServerAddCarCommand extends AbstractServerCommand {
     }
 
     private String getStartPositionChar(int startPosition){
+        // map start position int to the corresponding char in the track string
         Character character = new Character((char) ('A' + startPosition - 1));
         return character.toString();
     }

@@ -3,7 +3,7 @@ package net.slintes.webracer.race.impl;
 import net.slintes.webracer.race.Car;
 
 /**
- * car implementation
+ * Car implementation
  */
 public class Client implements Car {
 

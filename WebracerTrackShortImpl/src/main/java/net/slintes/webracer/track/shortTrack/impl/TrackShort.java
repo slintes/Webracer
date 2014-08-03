@@ -8,17 +8,18 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 /**
- *
+ * short track implementation
  */
 public class TrackShort implements Track {
 
-    private static final String fileName = "/track.txt";
+    private static final String FILENAME = "track.txt";
 
     @Override
     public String getTrack() {
 
-        URL resource = this.getClass().getClassLoader().getResource("track.txt");
-        StringBuffer track = new StringBuffer();
+        // load track from track.txt
+        URL resource = this.getClass().getClassLoader().getResource(FILENAME);
+        StringBuilder track = new StringBuilder();
 
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource.openStream()));

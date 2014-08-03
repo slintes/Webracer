@@ -11,7 +11,7 @@ window.addEventListener('load', function () {
     var TILESIZE = 9;
     Q.tilePos = function (col, row) {
         return { x: col * TILESIZE, y: row * TILESIZE };
-    }
+    };
 
     // disable default collision handling of 2d component,
     // we handle it in our RaceControl component
@@ -32,7 +32,7 @@ window.addEventListener('load', function () {
 
             // initial state
             Q.state.set({steering: STEERING_STRAIGHT});
-            Q.state.set({steeringAngle: 90})
+            Q.state.set({steeringAngle: 90});
             Q.state.set({speed: 0});
             Q.state.set({onGrass: false});
 

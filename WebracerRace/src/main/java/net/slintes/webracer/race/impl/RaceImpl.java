@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Implementaion of Race
  */
 public class RaceImpl implements Race {
 
@@ -23,7 +23,6 @@ public class RaceImpl implements Race {
     private final List<Client> clients = new ArrayList<>();
 
     public RaceImpl(Track track, WebracerDB raceDB){
-//        System.out.println("new Race");
         this.track = track;
         this.raceDB = raceDB;
     }
@@ -135,6 +134,7 @@ public class RaceImpl implements Race {
     }
 
     private int getNextStartPosition(){
+        // find the first start position which is not used already
         int startPos = 0;
         for(int i = 1; i <= MAX_NR_CARS; i++){
             final int finalI = i;
@@ -164,7 +164,7 @@ public class RaceImpl implements Race {
     }
 
     private int getNrFinishedCars(){
-        return new Long(clients.stream().filter(c -> c.isFinished()).count()).intValue();
+        return new Long(clients.stream().filter(Client::isFinished).count()).intValue();
     }
 
 }

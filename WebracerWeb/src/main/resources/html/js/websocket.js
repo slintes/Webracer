@@ -13,16 +13,17 @@
         connection.onopen = function(){
             console.log("webSocket open");
             Q.state.set(WEBSOCKET_INIT_READY, true);
-        }
+        };
 
         connection.onerror = function (error) {
             console.log("webSocket error: " + error);
-            // TODO handle error
+            // nothing we can do...?
         };
 
         connection.onmessage = function (message) {
             console.log("received message: " + message.data);
 
+            // parse json to command and data
             var jsonMessage = JSON.parse(message.data);
             var command = 'ws-' + jsonMessage.command;
 
@@ -35,13 +36,13 @@
             // where we need to react on commands
             Q.state.set(command, data);
         };
-    }
+    };
 
     // add send message to Q so that it's easy available everywhere
     var sendMessage = function(message) {
         console.log("sending message: " + message);
         connection.send(message);
-    }
+    };
 
     // send message with command and data
     Q.sendCommand = function (command, data) {
@@ -56,9 +57,9 @@
 
         var commandString = JSON.stringify(jsonCommand);
         sendMessage(commandString);
-    }
+    };
 
-    // generate some id
+    // generate a unique id
     var generateUUID = function () {
         var d = new Date().getTime();
         var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -79,7 +80,7 @@
         data[WSC_REGISTER_CLIENT_ID] = clientId;
         Q.sendCommand(WSC_REGISTER_CLIENT, data);
 
-    }
+    };
 
     var initReady = function(){
         var websocketReady = Q.state.get(WEBSOCKET_INIT_READY);
@@ -87,7 +88,7 @@
         if(websocketReady && quintusReady){
             registerClient();
         }
-    }
+    };
 
     Q.state.on("change." + WEBSOCKET_INIT_READY, initReady);
     Q.state.on("change." + QUINTUS_INIT_READY, initReady);
@@ -105,7 +106,7 @@
             Q.sendCommand(WSC_REGISTER_CAR, data);
             return false;
         }
-    }
+    };
 
     connect();
 

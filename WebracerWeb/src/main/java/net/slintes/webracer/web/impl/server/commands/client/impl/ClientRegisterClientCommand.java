@@ -10,8 +10,8 @@ public class ClientRegisterClientCommand extends AbstractClientCommand {
 
     private String clientId;
 
-    public ClientRegisterClientCommand(ClientCommandType type, String clientId) {
-        super(type);
+    public ClientRegisterClientCommand(String clientId) {
+        super(ClientCommandType.RegisterClient);
         this.clientId = clientId;
     }
 

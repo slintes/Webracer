@@ -1,7 +1,7 @@
 // some global constants, DO NOT EDIT
 
 // path to data
-var PATH = "/webracer/WebracerWeb/"
+var PATH = "/webracer/WebracerWeb/";
 
 // tile type numbers
 var TILE_ASPHALT = 1;

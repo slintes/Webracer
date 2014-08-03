@@ -16,9 +16,9 @@ public class ClientUpdatePositionCommand extends AbstractClientCommand {
     private boolean isFinished;
 
 
-    public ClientUpdatePositionCommand(ClientCommandType type, int xPos, int yPos, int speed, int angle,
+    public ClientUpdatePositionCommand(int xPos, int yPos, int speed, int angle,
                                        boolean isCrashed, boolean isFinished) {
-        super(type);
+        super(ClientCommandType.UpdatePosition);
         this.xPos = xPos;
         this.yPos = yPos;
         this.speed = speed;

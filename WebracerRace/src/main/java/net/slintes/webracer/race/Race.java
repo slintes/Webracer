@@ -8,7 +8,7 @@ public interface Race {
     /**
      * set the ui callback, which is used for communication from race to ui
      *
-     * @param uiCallback
+     * @param uiCallback the ui callback
      */
     public void setUICallback(UICallback uiCallback);
 

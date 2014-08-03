@@ -5,7 +5,7 @@ import net.slintes.webracer.web.impl.server.commands.server.AbstractServerComman
 import java.util.Map;
 
 /**
- * server side remove car command
+ * server side websocket command for removing a car
  */
 public class ServerRemoveCarCommand extends AbstractServerCommand {
 

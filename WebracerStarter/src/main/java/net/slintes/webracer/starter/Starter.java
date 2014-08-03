@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * Starts a OSGi container and installs and starts all needed bundles
  */
 public class Starter {
 

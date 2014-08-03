@@ -7,7 +7,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
 /**
- *
+ * Activator for this track
  */
 public class TrackActivator implements BundleActivator {
 

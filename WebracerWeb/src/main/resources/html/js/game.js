@@ -29,7 +29,7 @@ window.addEventListener('load', function () {
 
             // initial state
             Q.state.set(STEERING, STEERING_STRAIGHT);
-            Q.state.set(STEERING_ANGLE, 90)
+            Q.state.set(STEERING_ANGLE, 90);
             Q.state.set(SPEED, 0);
             Q.state.set(ONGRASS, false);
 
@@ -47,24 +47,24 @@ window.addEventListener('load', function () {
             // init stage with the track
             Q.stageScene("track", sceneNr++);
 
-            // init stage with steering and gear status
+            // init stage with graphical status box
             Q.stageScene("graphicalStatus", sceneNr++);
 
-            // init stage with steering and gear status
+            // init stage with message box
             Q.stageScene("messageBox", sceneNr++);
 
             // init stage with infos
 //            Q.stageScene("textStatus", sceneNr++);
 
-            // handle round based gameplay
+            // handle round based gameplay with timeouts
             var timeout;
             var nextRound = function () {
                 Q.stage(0).nextRound();
                 timeout = window.setTimeout(nextRound, TIMEOUT);
-            }
+            };
             var resetRace = function () {
                 window.clearTimeout(timeout);
-            }
+            };
 
             // add listener on start and reset command
             Q.state.on("change." + WSS_START, nextRound);

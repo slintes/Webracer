@@ -15,11 +15,12 @@
             // helper for keeping track of time
             p.stepWait = 0;
 
-            // reigister event handlers
+            // register event handlers
             this.entity.on("hit", this, "collision");
             this.entity.on("step", this, "step");
         },
 
+        // called by Quituns on collisions
         collision: function (col) {
 
             var p = this.entity.p;
@@ -33,17 +34,19 @@
             // handle grass
             if (tileNum == TILE_GRASS) {
                 if (Q.state.get(SPEED) == SPEED2) {
-                    Q.state.set(SPEED, SPEED1)
-                    Q.state.set(ONGRASS, true)
+                    Q.state.set(SPEED, SPEED1);
+                    Q.state.set(ONGRASS, true);
                 }
             }
             else {
-                Q.state.set(ONGRASS, false)
+                Q.state.set(ONGRASS, false);
             }
 
             // handle wall
             if (tileNum == TILE_WALL) {
                 p.crashed = true;
+
+                // stop moving
                 p.diffX = 0;
                 p.diffY = 0;
 
@@ -94,6 +97,7 @@
             }
         },
 
+        // called permanently by Quitus engine
         step: function (dt) {
 
             var p = this.entity.p;
@@ -132,9 +136,6 @@
         nextRound: function () {
 
             // calculate next round
-
-//            console.log("player step");
-
             var p = this.entity.p;
 
             if (p.crashed || p.finished) {
@@ -160,7 +161,7 @@
                     steering = STEERING_RIGHT;
                 }
             }
-            Q.state.set(STEERING, steering)
+            Q.state.set(STEERING, steering);
 
             // rotate car according to steering
             var angleChanged = false;
@@ -171,7 +172,7 @@
                 p.angle += DEGREES;
                 angleChanged = true;
             }
-            Q.state.set(STEERING_ANGLE, p.angle)
+            Q.state.set(STEERING_ANGLE, p.angle);
 
             // set new speed
             var speed = Q.state.get(SPEED);
@@ -191,7 +192,7 @@
                     speed = 0;
                 }
             }
-            Q.state.set(SPEED, speed)
+            Q.state.set(SPEED, speed);
             p.stepDistance = speed;
 
             // calculate x and y of movement
@@ -235,7 +236,7 @@
 
     });
 
-    // the player
+    // the player's sprite
     Q.Sprite.extend("Player", {
         init: function (p) {
             this._super(p, {
@@ -256,18 +257,18 @@
             this.add("2d, RaceControl");
 
             // save the latest key press
-            upPressed = function () {
+            var upPressed = function () {
                 Q.state.set(LAST_KEY, KEY_UP);
             };
-            downPressed = function () {
+            var downPressed = function () {
                 Q.state.set(LAST_KEY, KEY_DOWN);
             };
-            leftPressed = function () {
+            var leftPressed = function () {
                 Q.state.set(LAST_KEY, KEY_LEFT);
             };
-            rightPressed = function () {
+            var rightPressed = function () {
                 Q.state.set(LAST_KEY, KEY_RIGHT);
-            }
+            };
 
             Q.input.on("up", this, upPressed);
             Q.input.on("down", this, downPressed);
@@ -277,6 +278,5 @@
         }
 
     });
-
 
 };

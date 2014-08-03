@@ -35,6 +35,9 @@ public class ClientCommandFactory {
     }
 
     public ClientCommand getClientCommand(String json){
+
+        // parse the json string and create a ClientCommand from it
+
         JSONObject jsonCommand;
         try {
             jsonCommand = (JSONObject) parser.parse(json);
@@ -50,12 +53,12 @@ public class ClientCommandFactory {
             case COMMAND_REGISTER_CLIENT:
                 String clientId = jsonData.get(COMMAND_REGISTER_CLIENT_CLIENTID).toString();
                 ClientRegisterClientCommand registerClientCommand =
-                        new ClientRegisterClientCommand(ClientCommandType.RegisterClient, clientId);
+                        new ClientRegisterClientCommand(clientId);
                 return registerClientCommand;
             case COMMAND_REGISTER_CAR:
                 String name = jsonData.get(COMMAND_REGISTER_CAR_NAME).toString();
                 ClientRegisterCarCommand registerCarCommand =
-                        new ClientRegisterCarCommand(ClientCommandType.RegisterCar, name);
+                        new ClientRegisterCarCommand(name);
                 return registerCarCommand;
             case COMMAND_UPDATE_POSITION:
                 int posX = ((Long) jsonData.get(COMMAND_UPDATE_POSITION_POS_X)).intValue();
@@ -65,7 +68,7 @@ public class ClientCommandFactory {
                 boolean crashed = (boolean) jsonData.get(COMMAND_UPDATE_POSITION_CRASHED);
                 boolean finished = (boolean) jsonData.get(COMMAND_UPDATE_POSITION_FINISHED);
                 ClientUpdatePositionCommand updatePositionCommand =
-                        new ClientUpdatePositionCommand(ClientCommandType.UpdatePosition, posX, posY,
+                        new ClientUpdatePositionCommand(posX, posY,
                                 speed, angle, crashed, finished);
                 return updatePositionCommand;
             default: return null;

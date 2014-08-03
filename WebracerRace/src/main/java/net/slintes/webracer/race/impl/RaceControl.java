@@ -11,7 +11,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * start / stop timers, control the race
+ * Start / stop timers, control the race
  */
 public class RaceControl {
 
@@ -25,14 +25,14 @@ public class RaceControl {
     private final List<Client> cars;
     private final RaceDB raceDB;
 
-    int nrCars = 0;
-    int secondsToStart = SECONDS_TO_START;
+    private int nrCars = 0;
+    private int secondsToStart = SECONDS_TO_START;
 
     private RaceState state = RaceState.WAITING;
 
-    long startTime = 0;
-    long wonTime = 0;
-    long readyTime = 0;
+    private long startTime = 0;
+    private long wonTime = 0;
+    private long readyTime = 0;
 
     private String lastMessage = null;
     private int skipCount = 0;
@@ -43,8 +43,9 @@ public class RaceControl {
 
         this.raceDB = new RaceDB(webracerDB);
 
+        // start a timer which checks every seconds if something is to do
         ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
-        ses.scheduleAtFixedRate(() -> checkState(), 0, 1, TimeUnit.SECONDS);
+        ses.scheduleAtFixedRate(this::checkState, 0, 1, TimeUnit.SECONDS);
     }
 
     synchronized private void checkState() {
@@ -75,20 +76,30 @@ public class RaceControl {
         showMessage(name + " left the race");
     }
 
-    public void raceFinished(Client car) {
-        uiCallBack.showMessage(car.getName() + " finished the race on position " + car.getResultPosition() + " !");
-    }
-
+    /**
+     * call this when the first car finished the race
+     */
     public void raceWon(Car car) {
         wonTime = startTime + car.getResultTime();
         state = RaceState.WON;
         uiCallBack.showMessage(car.getName() + " won the race! CONGRATULATIONS!");
     }
 
+    /**
+     * call this when others than the first car finished the race
+     */
+    public void raceFinished(Car car) {
+        uiCallBack.showMessage(car.getName() + " finished the race on position " + car.getResultPosition() + " !");
+    }
+
+
     public void crash(Car car){
         uiCallBack.showMessage(car.getName() + " crashed his car into the wall!");
     }
 
+    /**
+     * call this when all cars finished or crahed
+     */
     public void raceReady(){
         readyTime = System.currentTimeMillis();
         state = RaceState.READY;
@@ -112,12 +123,14 @@ public class RaceControl {
 
     private void handleWaitingState(){
         if(nrCars < MINIMUM_NR_CARS){
+            // still waiting for cars
             showMessage("Waiting for players...");
             secondsToStart = SECONDS_TO_START;
         } else {
+            // countdown to race
             if (secondsToStart == 0) {
                 showMessage("GO!");
-                start();
+                startRace();
             } else {
                 showMessage("Race will start in " + secondsToStart + " seconds");
                 secondsToStart--;
@@ -162,13 +175,14 @@ public class RaceControl {
 
     }
 
-    private void start(){
+    private void startRace(){
         state = RaceState.RUNNING;
         startTime = System.currentTimeMillis();
         uiCallBack.start();
     }
 
     private void resetRace() {
+        // reset everything so that a new race can begin
         secondsToStart = SECONDS_TO_START;
         nrCars = 0;
         state = RaceState.WAITING;
@@ -184,7 +198,10 @@ public class RaceControl {
         uiCallBack.reset();
     }
 
-    // always use this in order to avoid the same message (Waiting for players...) repeated too fast
+    /**
+     * always use this method for sending messagers
+     * in order to avoid the same message (Waiting for players...) repeated too fast
+     */
     private void showMessage(String message){
         if(message.equals(lastMessage) && skipCount++ < 5){
             return;
@@ -195,6 +212,7 @@ public class RaceControl {
     }
 
     private String getResultString() {
+        // build astring containg the results of all cars
         StringBuilder result = new StringBuilder();
         result.append("Results: (next race in " + SECONDS_TO_SHOW_RESULTS + " seconds)\n");
         cars.stream()
@@ -206,6 +224,7 @@ public class RaceControl {
     }
 
     private String getCarString(Car c) {
+        // build a string containing the result of a car
         String carString = "";
         boolean finished = c.getResultTime() > 0;
         carString += "  " + (finished ? c.getResultPosition() : "Out of race")
@@ -215,6 +234,7 @@ public class RaceControl {
     }
 
     private String getTimeString(long resultInMs) {
+        // convert duration in milliseconds to a string
         long h = resultInMs / 100 % 10;
         long s = (resultInMs / 1000) % 60;
         long m = (resultInMs / (60 * 1000)) % 60;

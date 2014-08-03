@@ -6,7 +6,7 @@ import net.slintes.webracer.web.impl.server.commands.server.AbstractServerComman
 import java.util.Map;
 
 /**
- * server command for updating a car
+ * server side websocket command for updating a car
  */
 public class ServerUpdateCarCommand extends AbstractServerCommand {
 

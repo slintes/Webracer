@@ -7,7 +7,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 /**
- *
+ * Activator for the web bundle
  */
 public class WebActivator implements BundleActivator {
 

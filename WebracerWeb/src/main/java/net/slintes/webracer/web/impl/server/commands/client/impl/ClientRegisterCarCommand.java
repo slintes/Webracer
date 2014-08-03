@@ -10,8 +10,8 @@ public class ClientRegisterCarCommand extends AbstractClientCommand {
 
     private String name;
 
-    public ClientRegisterCarCommand(ClientCommandType type, String name) {
-        super(type);
+    public ClientRegisterCarCommand(String name) {
+        super(ClientCommandType.RegisterCar);
         this.name = name;
     }
 

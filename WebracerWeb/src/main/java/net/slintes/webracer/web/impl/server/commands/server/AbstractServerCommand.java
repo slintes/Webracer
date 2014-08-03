@@ -24,6 +24,7 @@ public class AbstractServerCommand implements ServerCommand {
     @Override
     @SuppressWarnings("unchecked")
     public String getJson(){
+        // create a json string of this command
         JSONObject jsonCommand = new JSONObject();
         jsonCommand.put("command", command);
 

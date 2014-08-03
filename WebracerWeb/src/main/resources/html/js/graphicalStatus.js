@@ -29,6 +29,7 @@
 
     Q.scene('graphicalStatus', function (stage) {
 
+        // create a box
         var box = stage.insert(new Q.UI.Container({
             fill: "rgba(0,0,255,0.4)",
             border: 5,
@@ -37,13 +38,15 @@
             scale: 0.5
         }));
 
+        // add everything to box
         var steering = box.insert(new Q.SteeringWheel({x: 0, y: 0}));
         var gear = box.insert(new Q.Gear({x: 150, y: 0}));
         var command = box.insert(new Q.Command({x: 40, y: 250, frame: 1}));
 
         box.fit(20);
 
-        updateSteering = function () {
+        // define methods for updating the status
+        var updateSteering = function () {
             var st = Q.state.get(STEERING);
             if(st == STEERING_STRAIGHT){
                 steering.p.angle = 0;
@@ -54,9 +57,9 @@
             if (st == STEERING_RIGHT) {
                 steering.p.angle = DEGREES;
             }
-        }
+        };
 
-        updateSpeed = function () {
+        var updateSpeed = function () {
             var speed = Q.state.get(SPEED);
             if(speed == 0){
                 gear.p.frame = 0;
@@ -67,9 +70,9 @@
             else if (speed == SPEED2) {
                 gear.p.frame = 2;
             }
-        }
+        };
 
-        updateCommand = function () {
+        var updateCommand = function () {
             var lastKey = Q.state.get(LAST_KEY);
             if(lastKey == KEY_NONE){
                 command.p.frame = 1;
@@ -90,8 +93,9 @@
                 command.p.frame = 0;
                 command.p.angle = 270;
             }
-        }
+        };
 
+        // register listeners
         Q.state.on("change." + STEERING, updateSteering);
         Q.state.on("change." + SPEED, updateSpeed);
         Q.state.on("change." + LAST_KEY, updateCommand);

@@ -9,7 +9,7 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
 /**
- *
+ * Activator for Race
  */
 public class RaceActivator implements BundleActivator {
 
