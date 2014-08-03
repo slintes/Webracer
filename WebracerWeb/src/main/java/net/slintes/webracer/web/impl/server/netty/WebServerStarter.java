@@ -48,6 +48,7 @@ public class WebServerStarter {
         WebSocketHandler wsHandler = new WebSocketHandler() {
             @Override
             public void configure(WebSocketServletFactory factory) {
+                factory.getPolicy().setIdleTimeout(60 * 60 * 1000);
                 factory.setCreator(
                         (servletUpgradeRequest, servletUpgradeResponse)
                                 -> new WebSocketAdapter(webServer));
