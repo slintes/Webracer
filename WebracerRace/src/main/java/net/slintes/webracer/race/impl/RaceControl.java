@@ -196,7 +196,7 @@ public class RaceControl {
 
     private String getResultString() {
         StringBuilder result = new StringBuilder();
-        result.append("Results:\n");
+        result.append("Results: (next race in " + SECONDS_TO_SHOW_RESULTS + " seconds)\n");
         cars.stream()
                 .filter(c -> c.getName() != null)
                 .sorted((c1, c2) -> new Long(c1.getResultPosition()).compareTo(new Long(c2.getResultPosition())))
