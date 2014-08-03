@@ -82,6 +82,25 @@
         }
 
         Q.state.on("change." + WSS_REMOVECAR, removeCar);
+
+        var resetRace = function() {
+            // remove all cars
+            stage.remove(stage.player);
+            stage.player = null;
+
+            for(var carId in stage.otherCars){
+                stage.remove(stage.otherCars[carId]);
+            }
+            stage.otherCars = {};
+
+            Q.state.set(STEERING, STEERING_STRAIGHT);
+            Q.state.set(SPEED, 0);
+            Q.state.set(LAST_KEY, KEY_NONE);
+            Q.state.set(STEERING_ANGLE, 90);
+            Q.state.set(ONGRASS, false);
+        }
+
+        Q.state.on("change." + WSS_RESET, resetRace);
     });
 
 };

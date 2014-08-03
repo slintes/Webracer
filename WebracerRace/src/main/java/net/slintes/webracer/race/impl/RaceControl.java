@@ -44,9 +44,7 @@ public class RaceControl {
         this.raceDB = new RaceDB(webracerDB);
 
         ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
-        ses.scheduleAtFixedRate(() -> {
-            checkState();
-        }, 0, 1, TimeUnit.SECONDS);
+        ses.scheduleAtFixedRate(() -> checkState(), 0, 1, TimeUnit.SECONDS);
     }
 
     synchronized private void checkState() {
@@ -174,7 +172,14 @@ public class RaceControl {
         secondsToStart = SECONDS_TO_START;
         nrCars = 0;
         state = RaceState.WAITING;
-        cars.clear();
+        cars.stream().forEach(
+                c -> {
+                    c.setStartPosition(0);
+                    c.setCrashed(false);
+                    c.setFinished(false);
+                    c.setResultTime(0);
+                    c.setName(null);
+                });
         uiCallBack.reset();
     }
 
@@ -190,13 +195,21 @@ public class RaceControl {
 
     private String getResultString() {
         StringBuilder result = new StringBuilder();
-        result.append("Results:");
+        result.append("Results:\n");
         cars.stream()
-                .filter(c -> c.isFinished())
                 .sorted((c1, c2) -> new Long(c1.getResultTime()).compareTo(new Long(c2.getResultTime())))
-                .forEach(c -> result.append("\n" + c.getResultPosition() + ": " + c.getName() + " (" + getTimeString(c.getResultTime()) + ")"));
+                .forEach(c -> result.append(getCarString(c)));
 
         return result.toString();
+    }
+
+    private String getCarString(Car c) {
+        String carString = "";
+        boolean finished = c.getResultPosition() > 0;
+        carString += "  " + (finished ? c.getResultPosition() : "Out of race")
+                + ": " + c.getName()
+                + (finished ? " (" + getTimeString(c.getResultTime()) + ")\n" : "\n");
+        return carString;
     }
 
     private String getTimeString(long resultInMs) {

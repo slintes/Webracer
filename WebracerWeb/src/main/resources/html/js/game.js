@@ -56,17 +56,19 @@ window.addEventListener('load', function () {
             // init stage with infos
 //            Q.stageScene("textStatus", sceneNr++);
 
-            // start timeout
-//            window.setTimeout(nextRound, TIMEOUT);
-
             // handle round based gameplay
+            var timeout;
             var nextRound = function () {
                 Q.stage(0).nextRound();
-                window.setTimeout(nextRound, TIMEOUT);
+                timeout = window.setTimeout(nextRound, TIMEOUT);
+            }
+            var resetRace = function () {
+                window.clearTimeout(timeout);
             }
 
-            // add listener on start command for starting the race
+            // add listener on start and reset command
             Q.state.on("change." + WSS_START, nextRound);
+            Q.state.on("change." + WSS_RESET, resetRace);
 
             Q.state.set(QUINTUS_INIT_READY, true);
         }

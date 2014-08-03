@@ -135,7 +135,7 @@ public class WebServer implements UICallback {
 
     @Override
     public void reset() {
-
+        sendCommand(new ServerResetCommand());
     }
 
 

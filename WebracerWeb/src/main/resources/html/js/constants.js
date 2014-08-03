@@ -53,6 +53,8 @@ var WSS_REMOVECAR_CLIENTID = "clientId"; // data name
 
 var WSS_START = "ws-start"; // command name
 
+var WSS_RESET = "ws-reset"; // command name
+
 var WSS_UPDATE_CAR = "ws-updateCar"; // command name
 var WSS_UPDATE_CAR_XPOS = "xPos"; // data name
 var WSS_UPDATE_CAR_YPOS = "yPos"; // data name
