@@ -85,8 +85,10 @@
 
         var resetRace = function() {
             // remove all cars
-            stage.remove(stage.player);
-            stage.player = null;
+            if(stage.player){
+                stage.remove(stage.player);
+                stage.player = null;
+            }
 
             for(var carId in stage.otherCars){
                 stage.remove(stage.otherCars[carId]);

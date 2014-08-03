@@ -14,7 +14,7 @@ public class Client implements Car {
     private int angle = 90;
     private boolean isCrashed = false;
     private boolean isFinished = false;
-    private int resultPosition = 0;
+    private int resultPosition = 9999;
     private long resultTime = 0;
     private String name = null;
     private String clientId = null;

@@ -178,6 +178,7 @@ public class RaceControl {
                     c.setCrashed(false);
                     c.setFinished(false);
                     c.setResultTime(0);
+                    c.setResultPosition(9999);
                     c.setName(null);
                 });
         uiCallBack.reset();
@@ -197,7 +198,8 @@ public class RaceControl {
         StringBuilder result = new StringBuilder();
         result.append("Results:\n");
         cars.stream()
-                .sorted((c1, c2) -> new Long(c1.getResultTime()).compareTo(new Long(c2.getResultTime())))
+                .filter(c -> c.getName() != null)
+                .sorted((c1, c2) -> new Long(c1.getResultPosition()).compareTo(new Long(c2.getResultPosition())))
                 .forEach(c -> result.append(getCarString(c)));
 
         return result.toString();
@@ -205,7 +207,7 @@ public class RaceControl {
 
     private String getCarString(Car c) {
         String carString = "";
-        boolean finished = c.getResultPosition() > 0;
+        boolean finished = c.getResultTime() > 0;
         carString += "  " + (finished ? c.getResultPosition() : "Out of race")
                 + ": " + c.getName()
                 + (finished ? " (" + getTimeString(c.getResultTime()) + ")\n" : "\n");

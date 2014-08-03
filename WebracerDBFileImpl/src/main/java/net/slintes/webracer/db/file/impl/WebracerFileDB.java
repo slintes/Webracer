@@ -35,6 +35,7 @@ public class WebracerFileDB implements WebracerDB {
             // write cars
             List<Car> cars = race.getCars();
             cars.stream()
+                    .filter(c -> c.getName() != null)
                     .sorted((c1, c2) -> new Long(c1.getResultPosition()).compareTo(new Long(c2.getResultPosition())))
                     .forEach(c -> { try { fileWriter.append(getCarString(c)); }
                                     catch (IOException e) { throw new UncheckedIOException(e); }}
@@ -49,7 +50,7 @@ public class WebracerFileDB implements WebracerDB {
 
     private String getCarString(Car c) {
         String carString = "";
-        boolean finished = c.getResultPosition() > 0;
+        boolean finished = c.getTime() > 0;
         carString += "  " + (finished ? c.getResultPosition() : "Out of race")
                 + ": " + c.getName()
                 + (finished ? " (" + getTimeString(c.getTime()) + ")\n" : "\n");
