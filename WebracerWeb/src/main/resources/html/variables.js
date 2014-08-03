@@ -11,4 +11,4 @@ var SPEED2 = 40;
 var DEGREES = 20;
 
 // nr of laps to go
-var NR_LAPS = 1;
+var NR_LAPS = 3;
