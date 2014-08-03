@@ -64,11 +64,17 @@ public class RaceImpl implements Race {
 
     @Override
     synchronized public int registerCar(String clientId, String name) {
+
+        Client client = getClient(clientId);
+        if(client.getName() != null) {
+            // client already registered a car...
+            return client.getStartPosition();
+        }
+
         if(!raceControl.getState().equals(RaceState.WAITING) || maxNrCarsReached()){
             return 0;
         }
 
-        Client client = getClient(clientId);
         int startPosition = getNextStartPosition();
         client.setStartPosition(startPosition);
         client.setName(name);
